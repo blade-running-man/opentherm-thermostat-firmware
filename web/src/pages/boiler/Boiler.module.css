@@ -1,0 +1,173 @@
+/* SPDX-FileCopyrightText: 2026 Oleksandr Slukovskyi (@blade-running-man) */
+/* SPDX-License-Identifier: Apache-2.0 */
+
+/* The Boiler page. Semantic tokens from styles/global.css only — no colours of its own
+   here, or the palette change (which is coming: the palette is inherited from someone
+   else's firmware) would pass this page by. */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* --- header ----------------------------------------------------------------------------- */
+
+.verdict {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.answering {
+  color: var(--success);
+}
+
+/* --notice, not --danger: a silent boiler while the bus is being wired up is an ordinary
+   state, not a broken device. Only an error answer is painted red here. */
+.silent {
+  color: var(--notice);
+}
+
+.counters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 12px 0;
+}
+
+.counter {
+  display: flex;
+  flex-direction: column;
+}
+
+.counterValue {
+  font-family: var(--mono);
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.counterWarn {
+  color: var(--notice);
+}
+
+.counterLabel {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* --- table ------------------------------------------------------------------------------ */
+
+/* The scroll belongs to the wrapper: ten columns do not fit on a phone, and the whole page
+   must not be dragged sideways — the counter header would go with the table. */
+.scroller {
+  overflow-x: auto;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.8125rem;
+}
+
+.table th,
+.table td {
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.table th {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  position: sticky;
+  top: 0;
+  background: var(--bg-card);
+}
+
+/* The only column allowed to wrap. ID 5 has seven entities, and their names comma-separated
+   on one line carry all eight reading columns off the edge of the screen — and those are
+   what the table exists for. The width is capped so a long name does not decide for the
+   others.
+
+   WRITTEN AS `.table td.name`, NOT `.name`, AND THAT IS THE WHOLE RULE. `.table td` above
+   sets white-space: nowrap and weighs (0,1,1) — a class plus an element. A bare `.name`
+   weighs (0,1,0) and loses, so nowrap stayed in force while max-width still clamped the
+   box: the text could neither wrap nor fit, and spilled sideways across the neighbouring
+   columns. On the real page ID 0 painted six names over four reading columns and made both
+   unreadable. It shipped that way because nothing renders this page — there is no DOM
+   environment in the project, and tsc and vite only see types and bundling.
+   DO NOT drop it back to a bare class. */
+.table td.name {
+  white-space: normal;
+  max-width: 16rem;
+}
+
+/* Numbers monospaced and right-aligned: the columns are read by comparing rows against each
+   other, and proportional digits throw the places out of line. */
+.num {
+  font-family: var(--mono);
+  text-align: right;
+}
+
+.token {
+  font-family: var(--mono);
+}
+
+.bits {
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  white-space: pre;
+}
+
+/* The second value in a cell — decimal under hex, the answer count under the age. */
+.sub {
+  display: block;
+  font-size: 0.6875rem;
+  color: var(--text-dim);
+}
+
+/* An answer with a type other than read-ack/write-ack: "no such ID", "the data is invalid".
+   That is an answer and not silence, and while debugging it means more than the other rows. */
+.anomaly {
+  color: var(--notice);
+}
+
+/* Age: fresher than 5 s is highlighted, older than 30 s is dimmed. What is highlighted is
+   the BACKGROUND and a bar on the left, not the text colour: the text colour in this table
+   already says something else (an anomalous answer type), and two meanings on one property
+   cannot be told apart. The bar is the same device as .notice uses in sections.module.css. */
+.table td:first-child {
+  border-inline-start: 3px solid transparent;
+}
+
+.fresh td {
+  background: var(--bg-sunken);
+}
+
+.fresh td:first-child {
+  border-inline-start-color: var(--accent);
+}
+
+.stale {
+  opacity: 0.45;
+}
+
+/* The line test stands apart: it is the only action on the page that
+   interferes with the bus. */
+.linetest {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border, rgba(128, 128, 128, 0.3));
+}
+
+.linetest button {
+  margin-bottom: 0.5rem;
+}

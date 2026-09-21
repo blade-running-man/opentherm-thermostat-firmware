@@ -1,0 +1,137 @@
+/* SPDX-FileCopyrightText: 2026 Oleksandr Slukovskyi (@blade-running-man) */
+/* SPDX-License-Identifier: Apache-2.0 */
+
+/* The State page. Semantic tokens from styles/global.css only — no colours of its own
+   here, or the palette change (which is coming: the palette is inherited from someone else's
+   firmware) would pass this page by. The layout repeats pages/boiler: two pages side by side
+   built differently read as two different programs. */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+/* The scroll belongs to the wrapper: five columns with an input field do not fit on a phone,
+   and the whole page must not be dragged sideways — the write-failure message would go with
+   the table. */
+.scroller {
+  overflow-x: auto;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.8125rem;
+}
+
+.table th,
+.table td {
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.table th {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  position: sticky;
+  top: 0;
+  background: var(--bg-card);
+}
+
+/* The only column allowed to wrap: entity names are long, and on one line they carry the
+   write column off the edge of the screen — and that column is what the page exists for.
+
+   WRITTEN AS `.table td.name`, NOT `.name`, for the reason pages/boiler pays for as well:
+   `.table td` above sets white-space: nowrap at (0,1,1), a bare class weighs (0,1,0) and
+   loses. nowrap then holds while max-width still clamps the box, so the text neither wraps
+   nor fits and spills across the columns to its right. DO NOT drop it back to a bare
+   class. */
+.table td.name {
+  white-space: normal;
+  max-width: 18rem;
+}
+
+/* Numbers monospaced and right-aligned: the column is read by comparing rows against each
+   other, and proportional digits throw the places out of line. */
+.num {
+  font-family: var(--mono);
+  text-align: right;
+}
+
+/* The second value in a cell: the key and Data-ID under the name, the bounds under the input. */
+.sub {
+  display: block;
+  font-size: 0.6875rem;
+  color: var(--text-dim);
+}
+
+/* The dash is dimmed: the absence of a value is not a value, and the two must not look alike
+   even at a glance. */
+.none {
+  color: var(--text-dim);
+}
+
+/* --- availability -------------------------------------------------------------------------
+
+   Four states and three different colours. "The boiler does not support it" and "the data is
+   invalid" are different diagnoses (see State.tsx), so they are not painted the same colour:
+   the first is final and is painted as a refusal, the second is temporary and is painted as
+   a warning. */
+
+.ok {
+  color: var(--success);
+}
+
+.invalid {
+  color: var(--notice);
+}
+
+.unsupported {
+  color: var(--danger);
+}
+
+.unknown {
+  color: var(--text-dim);
+}
+
+/* An age older than STALE_MS (decode.ts): the value exists, but the boiler has not confirmed
+   it for a long time. */
+.stale {
+  opacity: 0.45;
+}
+
+/* --- writing ------------------------------------------------------------------------------ */
+
+.write {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* The field sized to its content rather than full width: global.css gives input a
+   width: 100%, and inside a table cell that would stretch the write column across the whole
+   screen. */
+.write input {
+  width: 7rem;
+}
+
+/* The bounds and "not a number" go UNDER the field, not beside it: to the right of the button
+   they would push the write column apart, and the table would slide sideways across all sixty
+   rows. */
+.write .sub,
+.write .invalid {
+  flex-basis: 100%;
+  font-size: 0.6875rem;
+}

@@ -1,0 +1,38 @@
+# The partition table is our own, partitions.csv: two OTA slots of 1984 KiB each, no file
+# system, the SPA is compiled into the application. The justification of the offsets is in
+# partitions.csv itself; ota_0 must stay at 0x10000.
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+
+# The LOLIN C3 mini has no UART bridge: the only port is the built-in USB Serial/JTAG.
+# Without this line the console is silent and the board looks like it failed to boot, even
+# though it works. GPIO18/19 used by USB are not routed to the header, there is no conflict
+# with the shield.
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+
+# WebSocket support in esp_http_server is off by default. Without this line the WS
+# handlers do not fail the build -- they simply are not compiled, and the absence shows up
+# as a capability that went missing. In phase 1 there is no /ws yet; the line stands here so
+# that phase 4 does not begin with a riddle.
+CONFIG_HTTPD_WS_SUPPORT=y
+
+# The /ws handler is NOT called on the handshake. httpd_uri.c:337-363: on seeing Upgrade on
+# a route with is_websocket, the server ITSELF answers 101 and does `return ESP_OK`, bypassing
+# uri->handler -- that is, the handler has no place where it could look at the ticket in the
+# query string BEFORE the protocol switch. The only such hook is the pre-handshake callback,
+# and it is hidden behind this line; without it the httpd_uri_t structure does not even have
+# the ws_pre_handshake_cb field (esp_http_server.h:462-468).
+#
+# A refusal from it closes the socket, and the 401 gets out as an ordinary response, because
+# the 101 has not been sent yet. DO NOT remove: without the callback the socket opens to
+# EVERYONE who reached the device, and the ticket stays a piece of paper nobody asks for.
+CONFIG_HTTPD_WS_PRE_HANDSHAKE_CB_SUPPORT=y
+
+CONFIG_LOG_DEFAULT_LEVEL_INFO=y
+
+# esp-mqtt speaks plain MQTT only (V2 spec §5.4, main design §13: no TLS to the broker), so its
+# TLS and WebSocket transports are compiled out -- 12.9 KB of flash, measured on lolin_c3_mini at
+# the V2a plan. Turning TLS on later is these two lines AND a certificate story, not one of them.
+CONFIG_MQTT_TRANSPORT_SSL=n
+CONFIG_MQTT_TRANSPORT_WEBSOCKET=n

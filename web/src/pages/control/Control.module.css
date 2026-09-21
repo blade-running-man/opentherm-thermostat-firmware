@@ -1,0 +1,100 @@
+/* SPDX-FileCopyrightText: 2026 Oleksandr Slukovskyi (@blade-running-man) */
+/* SPDX-License-Identifier: Apache-2.0 */
+
+/* The control card. Semantic tokens from styles/global.css only, like every page: a palette
+   change must not pass this page by. */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+/* The state is the largest thing on the page: it is the one question the page is opened with. */
+.state {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Colour is never the only carrier: the label says the same thing in words. */
+.ok { color: var(--success); }
+.idle { color: var(--text-dim); }
+.warn { color: var(--notice); }
+.alarm { color: var(--danger); }
+
+.note {
+  margin: 4px 0 0;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+}
+
+.label {
+  color: var(--text-dim);
+}
+
+.value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pair {
+  display: inline-flex;
+  gap: 4px;
+}
+
+/* The value the device reports, on the button that sends it. */
+.pressed {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.form input {
+  width: 6rem;
+}
+
+.bad {
+  color: var(--danger);
+  font-size: 0.8125rem;
+}
+
+.banner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-inline-start-width: 4px;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+}
+
+.bannerActive { border-inline-start-color: var(--danger); }
+.bannerPast { border-inline-start-color: var(--notice); }
