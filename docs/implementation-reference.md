@@ -131,6 +131,12 @@ surface), `web_assets` (the embedded SPA), `ot_log` (the in-RAM log ring),
 `ot_onewire` (RMT-backed 1-Wire transport for the shield's DS18B20),
 `ot_onewire_decode` (the pure CRC + temperature decode).
 
+**Status LED** — `ot_led` (pure: the health ladder and the animation curves that
+turn a sampled `ot_led_world_t` into a colour + motion), `ot_led_task` (the
+impure glue: one low-priority task that samples the network, MQTT and control
+state once a second and drives the WS2812 over `led_strip`/RMT). Reader-only by
+design — see the dependency-direction note below.
+
 ### Dependency direction
 
 The graph is **acyclic**. Dependencies point downward: the HTTP and HA layers
@@ -149,6 +155,21 @@ Two cycle-avoidance decisions are worth naming because they shaped the tree:
 - **`ot_bus` depends on `ot_state` in one direction only**
   (`ot_state_is_unsupported()`), because `ot_state` must never depend on the
   bus — that would be the same kind of link-breaking cycle.
+- **`ot_led_task` is a fan-in leaf, not another layer.** It reads `ot_net`,
+  `ot_mqtt_link`, `ot_thermostat` and `ot_state` — components from three
+  different layers above hardware — but nothing depends back on it, so the
+  acyclic graph is unaffected; it only adds edges that terminate. It is kept
+  safe by being **reader-only**: every source it samples is a non-blocking
+  snapshot getter (`ot_net_get_state`, `ot_mqtt_link_status`,
+  `ot_thermostat_control_get`, `ot_state_get`), never a call that dials, waits
+  or touches the bus lock — the LED must never be the reason the OpenTherm
+  master falls silent ((a) above). The pure `ot_led` owns its own
+  `ot_led_net_state_t` (deliberately not `ot_net_state_t`, which is impure and
+  not host-buildable); the glue converts one to the other with an explicit
+  `switch` in `ot_led_task.c` (never a cast), so an unknown/added net state
+  fails toward showing a problem rather than silently reading as "connected".
+  No host suite covers this glue; it is pinned by
+  `tools/tests/test_source_guards_led.py`.
 
 The pure-core/impure-shell split is itself a dependency rule: the pure siblings
 (`ot_bus_sched`, `ot_bus_track`, `ot_control`, `ot_control_io`, `ot_command`,
@@ -466,6 +487,9 @@ obvious neighbour:
   (e.g. `ot_bus_write_if_idle` must not become `ot_bus_write`).
 - `tools/tests/test_source_guards_mqtt.py` — over the `ot_mqtt_link` / `main.cpp`
   glue (e.g. no command-origin literal may appear in `ot_mqtt_link`).
+- `tools/tests/test_source_guards_led.py` — over the `ot_led_task` / `main.cpp`
+  glue (e.g. the net-state conversion must stay an explicit `switch`, and the
+  glue must never reference a bus-write or bus-lock call).
 
 The generator side also carries `test_discovery.py` (the HA-kill rules on
 rendered documents) and `test_ha_schema.py` (every document handed to Home
@@ -753,3 +777,23 @@ and a link to the full contract.
   points: `ot_onewire_crc8`, `_scratchpad_crc_ok`, `_temp_raw`, `_temp_c`.
   Suite: `test_ot_onewire`.
   [../components/ot_onewire_decode/README.md](../components/ot_onewire_decode/README.md)
+
+### Status LED
+
+- **ot_led** — pure: the health ladder (colour, from the WiFi → MQTT → HA
+  chain and the failsafe) and the animation curves (motion, from boiler
+  activity) that turn a sampled `ot_led_world_t` into an RGB pixel. Declares
+  its own `ot_led_net_state_t` rather than depending on the impure
+  `ot_net_state_t`. Entry points: `ot_led_render`, `ot_led_note_ota`
+  (dormant in v1). Suite: `test_ot_led` (26 tests).
+  [../components/ot_led/README.md](../components/ot_led/README.md)
+
+- **ot_led_task** — the impure glue: one `tskIDLE_PRIORITY+1` task samples
+  `ot_net_get_state`/`_has_credentials`, `ot_mqtt_link_status`,
+  `ot_thermostat_control_get` and `ot_state_get("flame")` once a second, ticks
+  the animation every ~50 ms, and drives the one WS2812 pixel on
+  `board->rgb.gpio` via `led_strip`/RMT. Reader-only — never writes an
+  OpenTherm frame, never takes the bus lock, never blocks. Started from
+  `app_main` (`src/main.cpp`) guarded by `board->rgb.gpio >= 0`. No host
+  suite; pinned by `tools/tests/test_source_guards_led.py`.
+  [../components/ot_led_task/README.md](../components/ot_led_task/README.md)

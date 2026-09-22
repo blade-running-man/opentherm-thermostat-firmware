@@ -193,6 +193,21 @@ deliberate — a floating URL once moved the toolchain out from under a verified
 `ota_0` must stay at `0x10000` and `nvs` is deliberately 0x4000 (not the stock 0x6000): a larger
 nvs would push the first app partition off 0x10000, where the merged flashable image expects it.
 
+### 2.7 The status LED
+
+Both boards carry an onboard WS2812 (`board.rgb.gpio`: LOLIN C3 mini GPIO7, ESP32-C6 SuperMini
+GPIO8) the firmware drives as a cosmetic, at-a-glance status indicator. Colour and motion are two
+independent axes: **colour** is the health of the WiFi → MQTT → Home Assistant chain, including the
+failsafe (blue while provisioning/connecting, red with no WiFi, amber with no MQTT, orange in the
+bounded failsafe, green when everything upstream is healthy); **motion** reflects boiler activity —
+a dim green heartbeat blip when idle, a breathing pulse while the burner is calling for heat, and a
+blink for the alarm-coloured states. The pure health ladder and animation curves live in
+`components/ot_led/` (host-tested, `test_ot_led`); the impure sampling and the WS2812/RMT write
+live in `components/ot_led_task/`, a single low-priority task that samples the network, MQTT and
+control state once a second. It is **reader-only**: it never writes an OpenTherm frame, never
+takes the bus lock, and never blocks on the network, so it cannot be the reason the master falls
+silent (§3.4). A board with `rgb.gpio < 0` simply gets no LED task.
+
 ---
 
 ## 3. The OpenTherm layer
