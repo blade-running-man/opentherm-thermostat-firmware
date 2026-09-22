@@ -29,6 +29,7 @@
 #include "board.h"
 #include "ot_bus.h"
 #include "ot_http.h"
+#include "ot_led_task.h"
 #include "ot_log.h"
 #include "ot_master.h"
 #include "ot_mqtt_link.h"
@@ -281,5 +282,14 @@ extern "C" void app_main(void)
                                     NULL);
         if (ok != pdPASS)
             ESP_LOGW(TAG, "DS18B20 task not created; no room readings");
+    }
+
+    // Status LED, LAST and lowest priority alongside the DS18B20 read: reader-only, it must never
+    // delay the bus, the network or HTTP, and never writes an OpenTherm frame. The GPIO comes from
+    // the board descriptor -- a board with no LED (rgb.gpio < 0) simply gets none.
+    if (b->rgb.gpio >= 0) {
+        esp_err_t led = ot_led_task_start(b);
+        if (led != ESP_OK)
+            ESP_LOGW(TAG, "status LED not started: %s", esp_err_to_name(led));
     }
 }

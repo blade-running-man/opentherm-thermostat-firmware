@@ -1,0 +1,11 @@
+# The ESP-IDF component manager pulls Espressif's WS2812 driver at cmake-configure time.
+# led_strip drives the addressable LED over RMT (or SPI), so the one-wire WS2812 protocol
+# timing is generated in hardware -- the status task never bit-bangs and never holds interrupts
+# off, which matters because this device's whole reason to exist is an OpenTherm master that
+# must never fall silent. See ot_led_task.h.
+#
+# Pinned to the 3.x major: 3.x is the resolved and built API (led_strip_config_t with
+# .color_component_format and led_strip_new_rmt_device()); a floating major could move that
+# signature out from under ot_led_task.c.
+dependencies:
+  espressif/led_strip: "^3"
