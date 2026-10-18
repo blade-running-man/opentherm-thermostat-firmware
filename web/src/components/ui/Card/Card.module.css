@@ -1,0 +1,15 @@
+/* SPDX-FileCopyrightText: 2026 Oleksandr Slukovskyi (@blade-running-man) */
+/* SPDX-License-Identifier: Apache-2.0 */
+
+.title {
+  /* An <h2> (one level below the page <h1>) held at the size it had as an <h3>, so the
+     heading hierarchy is correct without the card title growing. */
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  color: var(--text-dim);
+  margin-bottom: 12px;
+  font-size: 0.8125rem;
+}

@@ -1,0 +1,67 @@
+/* SPDX-FileCopyrightText: 2026 Oleksandr Slukovskyi (@blade-running-man) */
+/* SPDX-License-Identifier: Apache-2.0 */
+
+/* The log page. Semantic tokens from styles/global.css only. */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* Its own scroll, so following the newest line does not drag the whole page. */
+.log {
+  max-height: 70vh;
+  overflow: auto;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: 1.25rem 7.5rem 8rem 1fr;
+  gap: 8px;
+  padding: 1px 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* The level letter's own column. No colour of its own: it inherits the row's, so the letter and
+   the line it labels always agree. */
+.level {
+  font-weight: 600;
+}
+
+.stamp,
+.tag {
+  color: var(--text-dim);
+}
+
+/* The message: the grid's 1fr column. min-width is what lets that track shrink below the width of
+   one unbreakable token -- a long path, a base64 blob -- so the text wraps under word-break above
+   instead of stretching the card sideways. DO NOT give it a colour: it would win over the level
+   rules below, which reach the message only by inheritance. */
+.text {
+  min-width: 0;
+}
+
+/* Colour is never the only carrier: every line prints its level letter in the .level column
+   (Log.tsx, logRow()), so E and W are told apart with no colour at all. The rules here are the
+   second carrier and need not be complete -- logRow() drops a class the stylesheet does not
+   define, so I is simply the body colour. */
+.E { color: var(--danger); }
+.W { color: var(--notice); }
+.D,
+.V { color: var(--text-dim); }

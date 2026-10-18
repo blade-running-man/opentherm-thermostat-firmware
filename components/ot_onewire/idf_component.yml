@@ -1,0 +1,10 @@
+# The ESP-IDF component manager pulls the managed 1-Wire transport at cmake-configure time.
+# It is the RMT implementation of the bus (espressif/onewire_bus, onewire_new_bus_rmt), which
+# is the whole reason this component exists: RMT generates the reset/write/read slot timing in
+# hardware, so reading the DS18B20 never holds interrupts off and never fights the OpenTherm
+# master's gptimer. See ot_onewire.h.
+#
+# The version is pinned to a minor range: 1.1.x is the resolved and built version;
+# a floating major could move the onewire_new_bus_rmt signature out from under ot_onewire.c.
+dependencies:
+  espressif/onewire_bus: "~1.1.2"

@@ -1,0 +1,13 @@
+.pio/
+.vscode/
+node_modules
+dist/
+__pycache__/
+*.pyc
+sdkconfig.lolin_c3_mini
+sdkconfig.native
+managed_components/
+dependencies.lock
+.DS_Store
+*.local
+.impeccable/

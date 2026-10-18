@@ -1,0 +1,29 @@
+/* SPDX-FileCopyrightText: 2026 Oleksandr Slukovskyi (@blade-running-man) */
+/* SPDX-License-Identifier: Apache-2.0 */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* The one Save for the whole configuration document. Wrapping rather than a fixed row: on a
+   phone held in portrait -- which is how this page is read while standing in front of the
+   unit -- the sentence beside the button does not fit next to it. */
+.saveBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}

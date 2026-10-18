@@ -1,0 +1,6 @@
+{
+    "name": "ot_thermostat",
+    "build": {
+        "srcFilter": ["-<*>", "+<ot_thermostat_room_cfg.c>"]
+    }
+}

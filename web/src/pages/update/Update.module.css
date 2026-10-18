@@ -1,0 +1,25 @@
+/* SPDX-FileCopyrightText: 2026 Oleksandr Slukovskyi (@blade-running-man) */
+/* SPDX-License-Identifier: Apache-2.0 */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cardHeading {
+  /* <h2> under the page <h1>, held at its former <h3> size (see Card.module.css .title). */
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.hint {
+  color: var(--text-dim);
+  margin-bottom: 12px;
+  font-size: 0.8125rem;
+}
+
+.progress {
+  margin-top: 12px;
+  color: var(--accent);
+}
