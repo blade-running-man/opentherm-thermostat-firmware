@@ -15,6 +15,8 @@ boiler over three surfaces — **MQTT + Home Assistant, an HTTP REST API, and it
 it is designed around a single idea: **the smart part lives in Home Assistant; the safe part lives
 on the device.**
 
+![The web UI's Control page: an animated pixel-art boiler scene with the burner lit, water circulating to a radiator and a sink, and live flow, return and modulation readings](docs/images/web-ui/boiler-scene.gif)
+
 ---
 
 ## The goal
