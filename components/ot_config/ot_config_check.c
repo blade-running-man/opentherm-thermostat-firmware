@@ -84,8 +84,8 @@ static bool host_char(char c)
 ot_config_err_t ot_config_check_host(const char *host)
 {
     const char *h = or_empty(host);
-    // No broker at all is a supported configuration: the unit ventilates the house whether or
-    // not anyone runs one, and CLAUDE.md's rule that nothing reboots because a peer is absent
+    // No broker at all is a supported configuration: the device keeps talking to the boiler
+    // whether or not anyone runs one, and AGENTS.md's rule that nothing reboots because a peer is absent
     // starts with being able to say "I do not use MQTT".
     if (h[0] == '\0')
         return OT_CONFIG_OK;

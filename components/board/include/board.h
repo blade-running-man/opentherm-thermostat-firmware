@@ -48,9 +48,10 @@ typedef struct {
     int8_t      status_led;
     board_rgb_t rgb;
 
-    // 1-Wire bus for the DIYLESS shield's DS18B20. On the C3 mini the sensor sits on
-    // shield position D7 = GPIO4 (owner-assigned); GPIO4 is otherwise free (ot_in=8,
-    // ot_out=10, button=9, rgb=7). Kept here so the number lives nowhere but board/.
+    // 1-Wire bus for the DIYLESS shield's DS18B20, -1 when none is wired (the DS18B20 task
+    // is then not started). On the C3 mini the sensor's DQ line is shield position
+    // D5 = GPIO1, confirmed on hardware (board_lolin_c3_mini.c); the C6 has none wired.
+    // Kept here so the number lives nowhere but board/.
     int8_t onewire_gpio;
 
     board_net_transport_t net_transport;

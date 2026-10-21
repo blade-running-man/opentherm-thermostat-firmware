@@ -41,9 +41,9 @@ static const char *TAG = "ot_led";
 // task is even scheduled.
 static led_strip_handle_t s_strip;
 
-// Dormant in v1: nothing sets this true (no OTA subsystem yet). Atomic because a future OTA path
+// Dormant: nothing sets this true (no OTA subsystem yet). Atomic because a future OTA path
 // on another task will toggle it around its write while this task reads it -- a read-only
-// observation that must never alter OTA behaviour. See docs/led-status-indicator.md, "Out of scope".
+// observation that must never alter OTA behaviour. See docs/device/indication.md, "Out of scope".
 static _Atomic bool s_ota_active;
 
 void ot_led_note_ota(bool active)

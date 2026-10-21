@@ -64,7 +64,7 @@ allocates it). NULL-safe throughout.
 | --- | --- |
 | `ot_prov_state(s)` | Current `ot_prov_state_t`. NULL → `WINDOW_CLOSED`. **DO NOT** project before init (see header). |
 | `ot_prov_mode(s)` | The `ot_prov_mode_t` the radio should run (OFF / AP / STA / AP_STA). |
-| `ot_prov_is_provisioned(s)` | The most important rule: false whenever an open AP is on the air, whatever NVS holds. NOT YET WIRED (see Notes). |
+| `ot_prov_is_provisioned(s)` | The most important rule: false whenever an open AP is on the air, whatever NVS holds. Feeds the access policy (see Notes). |
 | `ot_prov_has_credentials(s)` / `ot_prov_has_known_good(s)` | Storage facts. |
 | `ot_prov_window_is_open(s)` | Reports the last tick's decision (not re-decided). Not for driving the radio — use `mode()`. |
 | `ot_prov_window_remaining_ms(s, now_ms)` | ms left, or `OT_PROV_NEVER` for a never-closing window. |
@@ -176,11 +176,13 @@ reason this logic is a radio-free component.
   minutes at each boot; the AP self-returns after 30 minutes of the *right kind* of failure (not on
   a no-address failure); and a never-closing window is a supported configuration. Every access point
   this firmware raises is open.
-- **`ot_prov_is_provisioned()` is NOT YET WIRED.** The intent is that `ot_http_check()`'s
-  `ctx.provisioned` be fed from it, so an open provisioning AP forces the device to count as
-  unclaimed. At present `ot_net_has_credentials()` feeds it instead — which flips to "provisioned"
-  the moment credentials are stored, leaving the gap where a passer-by sets the first UI password on
-  an open AP and takes the device. Nothing in the tree calls any `ot_prov_*` function yet.
+- **`ot_prov_is_provisioned()` feeds the access policy.** `ot_net` owns the machine and drives it
+  from its task; `ot_net_is_provisioned()` answers from `ot_prov_is_provisioned()` under the
+  machine's lock, and `ot_http_gate.c` fills `ot_http_check()`'s `ctx.provisioned` from it. An open
+  provisioning AP therefore forces the device to count as unclaimed, whatever NVS holds. **DO NOT**
+  feed `ctx.provisioned` from "credentials are stored" instead: that flips to provisioned the moment
+  credentials are saved, while the open AP is still on the air, and leaves the gap where a
+  passer-by sets the first UI password on the open AP and takes the device.
 - **Reason 8 (`WIFI_REASON_ASSOC_LEAVE`) is special-cased to `FAIL_NONE`:** `esp_wifi_disconnect()`
   raises it, and the CONNECT action's contract makes the caller disconnect an associated station
   before reconnecting — so this is the machine's own nudge coming back. Classifying it would answer

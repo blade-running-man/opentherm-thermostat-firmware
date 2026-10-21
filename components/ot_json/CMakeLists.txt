@@ -8,7 +8,7 @@
 # request, and then the access policy in ot_policy has a second door. Same rule, and same
 # wording, as components/ot_captive and components/ot_auth.
 #
-# Four sources, not one: ot_json.cpp had grown over the 350-line ceiling (CLAUDE.md).
+# Four sources, not one: ot_json.cpp had grown over the 350-line ceiling (AGENTS.md).
 # The seam follows the division of responsibility that already existed in the file:
 #
 #   ot_json_scan.{h,cpp}  what a TOKEN is -- one string walk, one number grammar. Shared by all

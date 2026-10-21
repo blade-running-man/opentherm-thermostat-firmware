@@ -34,13 +34,22 @@ extern "C" {
 
 // Availability is three-valued, plus "not asked yet".
 //
-// DATA-INVALID and UNKNOWN-DATAID are DIFFERENT diagnoses, and both arrive with the
-// value 0x0000. The first means "the entity exists, there is no data right now": that
-// is how ID 5 answers when there are no faults, and ID 27 when no outside sensor is
-// connected. The second means "I do not have such an identifier". Collapsing them into
-// one means showing "no faults" and "0 °C outside" where neither was said.
+// DATA-INVALID and UNKNOWN-DATAID are DIFFERENT diagnoses, and neither carries data. The
+// first means "the entity exists, there is no data right now": that is how the Intergas
+// boiler answers ID 5 when there are no faults, and ID 27 when no outside sensor is
+// connected. The second means "I do not have such an identifier". The OpenTherm
+// specification does not fix their DATA-VALUE (a slave MAY send 0x0000 to a read, and may
+// send back a modified or echoed value to a write), so the type alone decides here and the
+// value of either reply is never read. Collapsing them into one means showing "no faults"
+// and "0 °C outside" where neither was said.
+//
+// Availability changes only when an answer arrives. A failed exchange (a timeout, a frame or
+// parity error) is never recorded here, so it leaves the availability, the value and
+// updated_ms as they were: a boiler that answered once and then fell silent keeps OK and its
+// last value, and only the age (now - updated_ms) grows. How old is too old is the consumer's
+// question, answered from updated_ms.
 typedef enum {
-    OT_AVAIL_UNKNOWN = 0,   // not asked yet, or there was no answer
+    OT_AVAIL_UNKNOWN = 0,   // no answer yet, or a first unknown-dataid (the second is UNSUPPORTED)
     OT_AVAIL_OK,            // the value is valid
     OT_AVAIL_INVALID,       // the boiler answered data-invalid
     OT_AVAIL_UNSUPPORTED,   // the boiler answered unknown-dataid twice

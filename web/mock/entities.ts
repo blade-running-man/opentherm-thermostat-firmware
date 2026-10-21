@@ -1,6 +1,6 @@
 // web/mock/entities.ts
 // Projections of BoilerState into the SPA's JSON shapes, reusing the generated registry so the
-// mock and the UI share one entity list (CLAUDE.md: "one list of entities, ever"). A value is
+// mock and the UI share one entity list (AGENTS.md: "one list of entities, ever"). A value is
 // "ok" only for the entities the model actually drives; every other Data-ID in the registry
 // (bus counters, product IDs, the OEM product string, ...) projects as unavailable, the same
 // way a real boiler leaves most of the registry unanswered.
@@ -100,7 +100,7 @@ export function renderEntity(s: BoilerState, key: string): MockResponse {
 }
 
 // writeEntity mirrors the firmware's refusals in order: 404 unknown, 405 read-only, 409 HA
-// ownership, 422 out of range, 202 accepted (ot_command's ladder, CLAUDE.md's ot_command entry).
+// ownership, 422 out of range, 202 accepted (ot_command's ladder, AGENTS.md's ot_command entry).
 export function writeEntity(s: BoilerState, key: string, value: number | boolean): MockResponse {
   const meta = ENTITIES.find((e) => e.key === key);
   if (!meta) return { status: 404, body: { error: "no such entity" } };

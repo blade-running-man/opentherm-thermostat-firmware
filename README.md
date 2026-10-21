@@ -9,8 +9,8 @@
 ![Protocol](https://img.shields.io/badge/protocol-OpenTherm%202.2-informational)
 ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 
-Own room-thermostat firmware for a gas boiler with an **OpenTherm** interface. One board, one
-universal binary, everything configured at runtime from a browser. It exposes one model of the
+Own room-thermostat firmware for a gas boiler with an **OpenTherm** interface. One binary per
+chip, everything else configured at runtime from a browser. It exposes one model of the
 boiler over three surfaces — **MQTT + Home Assistant, an HTTP REST API, and its own web UI** — and
 it is designed around a single idea: **the smart part lives in Home Assistant; the safe part lives
 on the device.**
@@ -61,7 +61,8 @@ Two operating modes, switched at runtime:
 - **Own web UI** (Preact + Vite + TypeScript, embedded in the binary) — a live boiler diagnostics
   page, a full state view, an executor control card, controller settings, and a log screen.
 - **One source of truth for entities** — REST, MQTT topics, HA discovery and the frontend types are
-  all generated from a single Python descriptor. ~68 boiler and executor entities.
+  all generated from a single Python descriptor (`tools/opentherm_ids.py`), boiler and executor
+  entities alike; the generated table is in the docs site's Reference section.
 
 ### Safety & reliability (the point of the project)
 - **The bus never goes silent.** No peripheral failure — Wi-Fi, broker, a stale sensor, a dead
@@ -72,31 +73,35 @@ Two operating modes, switched at runtime:
   summer bound still fire correctly even under a fast crash loop.
 - **Nothing reboots because a peer is absent.** A missing broker or controller is a normal state,
   not a reason to restart.
-- **Values are always bounded.** Every setpoint is clamped to the boiler's advertised range; the
-  mode, the season switch and the watchdog are not even reachable over MQTT.
+- **Values are always bounded.** A setpoint outside its bounds — the configured flow band for CH,
+  the boiler's own ID 48 range for hot water — is **refused** (`422` over REST, a rejected command
+  over MQTT), never clamped. The control mode and the watchdog are not reachable over MQTT at all,
+  and Home Assistant may turn the heating season off but never on.
 
 ### Boiler observability
-- Reads and decodes the boiler's OpenTherm Data-IDs, with three-valued availability
-  (`ok` / `invalid` / `unsupported`) discovered at runtime.
+- Reads and decodes the boiler's OpenTherm Data-IDs, with availability (`ok` / `invalid` /
+  `unsupported`, `unknown` until the boiler has answered) discovered at runtime.
 - Modulation, temperatures, pressure, flow, fault flags and diagnostic codes surfaced as entities.
 
 ### Room sensing
 - A registry of room-temperature sources with outlier filtering and freshness tracking; a
   safety-critical **steer** pick (a fresh, room-role source) kept separate from a **display** pick.
-- Adapters today: an MQTT source and the shield's DS18B20. Wi-Fi push/pull, BLE and general 1-Wire
-  are planned.
+- Two adapters: an MQTT source and the shield's DS18B20.
 
 ### Operations
-- **One universal binary**, everything configured at runtime — no per-device builds.
-- **Captive-portal provisioning** for first-boot Wi-Fi setup.
+- **One binary per chip**, everything else configured at runtime — no per-device builds.
+- **Access-point provisioning** for first-boot Wi-Fi setup: the device serves its own open
+  network and setup page.
 - **Write-only secrets** — a stored password is never returned by any API; a read hands back a
   sentinel.
-- **Dual-slot OTA** partitions for safe over-the-air updates.
+- **Two application slots** in the partition table (`ota_0`/`ota_1`, 1984 KiB each). The firmware
+  serves no update route; a new image goes on over USB (`pio run -e <env> -t upload`).
 - **No Arduino** anywhere — pure ESP-IDF, core and libraries.
 
 ## Hardware
 
-Two supported boards from one binary (selected by `IDF_TARGET`):
+Two supported boards from one source tree, one binary per chip (the board is selected by
+`IDF_TARGET`):
 
 | Board | Chip | OT IN | OT OUT | Notes |
 | --- | --- | --- | --- | --- |
@@ -106,8 +111,9 @@ Two supported boards from one binary (selected by `IDF_TARGET`):
 **DIYLESS ESP8266 Thermostat Shield** — a stacking shield in the D1 mini form factor, the OpenTherm
 master front-end. It is laid out for the ESP8266, so the GPIO numbers **do not match** the DIYLESS
 documentation. Wiring details and the strapping-pin catch are in
-[`docs/diyless-opentherm-master-shield.md`](docs/diyless-opentherm-master-shield.md) and
-[`docs/esp32-c3-mini.md`](docs/esp32-c3-mini.md).
+[`docs/reference/diyless-opentherm-master-shield.md`](docs/reference/diyless-opentherm-master-shield.md),
+[`docs/reference/esp32-c3-mini.md`](docs/reference/esp32-c3-mini.md) and
+[`docs/device/board.md`](docs/device/board.md).
 
 The firmware runs on a real Intergas Kombi Kompakt HRE boiler, talking to Home Assistant over MQTT.
 
@@ -145,13 +151,31 @@ discovery names stay English.
 
 ## Documentation
 
-| Path | What is in it |
+[`docs/`](docs/) is a [VitePress](https://vitepress.dev/) site — the as-built design and reference,
+and the authority for what the firmware does:
+
+| Section | What is in it |
 | --- | --- |
-| [`docs/firmware-design.md`](docs/firmware-design.md) | the design and reference: executor core, bus, entities, MQTT/HA, room sources, failure model, configuration, and a boiler-reference appendix |
-| [`docs/implementation-reference.md`](docs/implementation-reference.md) | the code-level reference: layered architecture, safety invariants and where each is enforced, end-to-end flows, per-component index |
-| `components/<name>/README.md` | one per component — the full per-component implementation doc |
-| [`CLAUDE.md`](CLAUDE.md) | the engineering rules that carry load |
-| [`docs/hardware-verification/`](docs/hardware-verification/) | test scenarios the owner walks on real hardware, grouped by what the device does |
+| [`guide/`](docs/guide/) | installation, first setup, configuration, Home Assistant, updating, troubleshooting |
+| [`architecture/`](docs/architecture/) | the executor model, the components and their dependency map, the runtime, the executor core, the failure model, security |
+| [`protocol/`](docs/protocol/) | the OpenTherm frame, the physical layer, the bus schedule, the command layer |
+| [`interfaces/`](docs/interfaces/) | the REST API, the WebSocket, MQTT, Home Assistant discovery, the web UI |
+| [`device/`](docs/device/) | the board, the status LED, networking, room sources, configuration storage, OTA, the enclosure |
+| [`boiler/`](docs/boiler/) | the Data-IDs the firmware reads and writes, and the boiler it runs on |
+| [`development/`](docs/development/) | building, testing, the entity registry, conventions |
+| [`hardware-verification/`](docs/hardware-verification/) | test scenarios the owner walks on real hardware, grouped by what the device does |
+| [`reference/`](docs/reference/) | the generated entity table, the two boards, the OpenTherm shield |
+
+Beside the site: `components/<name>/README.md` — one per component, the full per-component
+implementation doc — and [`AGENTS.md`](AGENTS.md), the engineering rules that carry load.
+
+Build or serve the site locally (Node.js required):
+
+```sh
+cd docs && npm install
+cd docs && npm run docs:dev         # live-reloading dev server
+cd docs && npm run docs:build       # static build; a dead link between pages fails it
+```
 
 ## What the firmware deliberately does *not* do
 

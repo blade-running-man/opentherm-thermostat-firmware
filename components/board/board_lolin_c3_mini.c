@@ -6,15 +6,16 @@
 // LOLIN C3 mini + DIYLESS ESP8266 Thermostat Shield.
 //
 // The mapping of D1 mini header labels onto GPIO numbers is derived from the
-// sch_c3_mini_v2.1.0.pdf schematic and the D1 mini v4 header order:
+// sch_c3_mini_v2.1.0-2.pdf schematic and the D1 mini v4 header order:
 //   D1 (shield: OT OUT) -> GPIO10
 //   D2 (shield: OT IN)  -> GPIO8
 //
 // GPIO8 is a strapping pin, but it does NOT interfere with the ordinary boot from
-// flash: that needs GPIO2 = 1 and GPIO9 = 1, and GPIO8 only takes part in entering
-// flashing mode. The dangerous pin here is a different one -- GPIO2, also known as
-// header position D0, and it must be HIGH at reset. The shield does not occupy D0;
-// verify with a multimeter.
+// flash: that is selected by GPIO9 = 1, and GPIO8 only takes part in entering
+// flashing mode. GPIO2, also known as header position D0, is a strapping pin too: it
+// does not select the boot mode, but the datasheet recommends a pull-up against
+// glitches, which the board provides (10 kOhm, R4) -- keep it from being driven low
+// at reset. The shield does not occupy D0; verify with a multimeter.
 //
 // At the same time the idle state of the OpenTherm line is LOW, which means a
 // connected but silent boiler holds GPIO8 down PERMANENTLY. That does not affect
@@ -27,8 +28,8 @@ static const board_t k_lolin_c3_mini = {
     .ot_out = 10,
 
     // ONLY the output is inverted. The input is read as is: the active
-    // state of the line is HIGH. The `!readState()` expression in opentherm_library,
-    // because of which the first edition of the design put true here, refers to the
+    // state of the line is HIGH. The `!readState()` expression in opentherm_library
+    // reads like an inverted input, but DO NOT put true here on its strength: it refers to the
     // sampling moment (the bit is taken AFTER the mid-bit transition), not to the
     // polarity.
     //

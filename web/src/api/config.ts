@@ -59,7 +59,7 @@ export interface DeviceConfig {
   failsafe_min_cycle_s: number;
   flow_min_dc: number;
   flow_max_dc: number;
-  // The room-MQTT source's four settings (docs/ha-room-source.md), rendered right after the flow
+  // The room-MQTT source's four settings (docs/device/room-sources.md), rendered right after the flow
   // band (ot_wire_render_config(), components/ot_wire/ot_wire_config.c) and, like the eight
   // above, ordinary NS_APP fields the executor does not own -- POST accepts them the same way it
   // accepts any other setting, so they travel in RoomPatch below, sent only when changed, for the
@@ -192,7 +192,7 @@ export function saveExecutor(patch: ExecutorPatch): Promise<void> {
 }
 
 /**
- * The room-MQTT source's four settings (docs/ha-room-source.md), in the order GET renders them.
+ * The room-MQTT source's four settings (docs/device/room-sources.md), in the order GET renders them.
  * Unlike EXECUTOR_KEYS these are not refused-by-name -- POST takes them like any other field --
  * but they get their own card and their own changed-only patch for the same reason: this document
  * carries no secret, so nothing forces a whole-document send, and a whole-document send would

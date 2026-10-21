@@ -12,7 +12,7 @@ renderers, so the three transports can never disagree about how a value is print
 Owns:
 
 - The JSON shape of the entity metadata (`/api/entities`), the entity values (`/api/state`), a
-  single entity (`/api/entity/<key>`), the `/ws` push frame, a bare per-entity value (used for
+  single entity (`/api/entities/<key>`), the `/ws` push frame, a bare per-entity value (used for
   MQTT state payloads), and the executor's control document (`/api/control`).
 - The one place where a value's printed form is decided (`emit_bare_value`), so REST, `/ws` and
   MQTT can never disagree about a switch, an enum, or an absent value.

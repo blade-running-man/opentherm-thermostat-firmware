@@ -139,8 +139,8 @@ bool ot_config_reset_erases(ot_config_reset_t tier, ot_config_ns_t ns)
     if (tier == OT_CONFIG_RESET_HARD)
         return true;
 
-    // Five seconds after boot takes the network and the UI password and
-    // leaves the broker, the prefix and the name. The gesture means "forget this network and let
+    // The soft tier takes the network and the UI password and leaves the broker, the prefix
+    // and the name. A soft reset means "forget this network and let
     // me back in", not "throw away everything the owner configured".
     return ns == OT_CONFIG_NS_WIFI || ns == OT_CONFIG_NS_OWNER;
 }

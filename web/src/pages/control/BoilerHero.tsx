@@ -15,7 +15,7 @@ import styles from "./BoilerHero.module.css";
  * (deviceState) and writes nothing: the controls below it keep their own tested wiring. Reading
  * deviceState.value here subscribes the component, so every frame that changes a shown entity
  * re-renders it, and the effect pushes the values into the scene. No entity is hand-listed -- the
- * keys are the generated registry's (CLAUDE.md: one entity list, ever).
+ * keys are the generated registry's (AGENTS.md: one entity list, ever).
  *
  * ONE CANVAS. The burner and the water-circulation loop share a single pixel grid (pixelBoiler.ts)
  * -- the flame lives inside the boiler that the water circles, so it is one machine, not two
@@ -76,15 +76,6 @@ export function BoilerHero() {
 
   return (
     <section class={styles.hero} aria-label={t("control.hero.ariaLabel")}>
-      {/* Synthwave backdrop: starfield sky, a glowing horizon, and a perspective grid receding
-          into the distance. Behind the scene; the boiler is drawn on a transparent canvas, so the
-          grid shows through its gaps. Decorative. */}
-      <div class={styles.backdrop} aria-hidden="true">
-        <div class={styles.stars} />
-        <div class={styles.horizon} />
-        <div class={styles.grid} />
-      </div>
-
       <div class={styles.status}>
         <span class={styles.state}>{state}</span>
         <span class={`${styles.pill} ${chOn ? styles.pillOn : ""}`}>
@@ -104,6 +95,7 @@ export function BoilerHero() {
         <span class={`${styles.tag} ${styles.radTag}`}>{t("control.hero.tag.rad")}</span>
         <span class={`${styles.tag} ${styles.sinkTag}`}>{t("control.hero.tag.sink")}</span>
         <span class={`${styles.tag} ${styles.coldTag}`}>{t("control.hero.tag.cold")} ▶</span>
+        <span class={`${styles.tag} ${styles.gasTag}`}>{t("control.hero.tag.gas")} ▶</span>
         <span class={styles.plate}>◈ {t("control.hero.tag.boiler")}</span>
         {!flameOn && <span class={styles.standby}>{t("control.hero.tag.standby")}</span>}
       </div>

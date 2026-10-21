@@ -14,7 +14,7 @@
 // ot_room keeps one of these per room source.
 //
 // Pure: no timers, no tasks, no allocation. Time enters only as an argument, which is what
-// lets the 24-hour and 49-day behaviour be tested on the host in milliseconds.
+// lets the stale limit and the 49-day wrap be tested on the host in milliseconds.
 //
 // OWNERSHIP: the caller owns the ot_sensor_t and every call takes it explicitly. There is
 // no global instance and no locking -- each ot_sensor_t instance is owned by exactly one
@@ -93,8 +93,8 @@ bool ot_sensor_update(ot_sensor_t *s, float celsius, uint32_t now_ms);
 // Advance time without offering a value. Called from the loop's periodic step.
 //
 // The overdue time is accumulated as a sum of wrap-safe deltas and NOT as now - last_ok.
-// uint32 monotonic milliseconds wrap after 49.7 days while the hard STALE limit is
-// 24 hours, so a subtraction spanning the wrap reads as "the sensor is fresh" -- in
+// uint32 monotonic milliseconds wrap after 49.7 days while a STALE limit (stale_after_ms) is
+// minutes to hours, so a subtraction spanning the wrap reads as "the sensor is fresh" -- in
 // January, with nobody watching. The accumulator has no such moment: it only ever grows,
 // and it saturates at UINT32_MAX (49.7 days) rather than wrapping.
 //
@@ -118,8 +118,8 @@ ot_sensor_state_t ot_sensor_state(const ot_sensor_t *s);
 float ot_sensor_value(const ot_sensor_t *s);
 
 // Milliseconds since the last accepted value, or since the first tick when there has never
-// been one. The consumer compares it against a limit of its own (ot_room does, against a
-// 24-hour hard STALE limit).
+// been one. The STALE decision is ot_sensor_state()'s, against this sensor's own
+// stale_after_ms; nothing applies a second, harder limit on top of it.
 uint32_t ot_sensor_overdue_ms(const ot_sensor_t *s);
 
 #ifdef __cplusplus

@@ -108,14 +108,15 @@ void ot_control_io_readback_in(const ot_control_io_readback_t *rb, ot_control_in
 // Everything the task keeps from the replies the bus hears: the ID 56 readback above, and the
 // FIRST DATA-INVALID answer to ID 1 with its value. The boiler refusing the held setpoint that way
 // most likely means its range and flow_min_dc..flow_max_dc disagree; the task says so ONCE, with
-// the value, from its own step -- the bus task that records it may not log (ot_bus.h, DO NOT
-// BLOCK). The write still counts as sent (ot_bus_track.h), deliberately: holding CH down on it
+// the DATA-VALUE the reply carried, from its own step -- the bus task that records it may not log
+// (ot_bus.h, DO NOT BLOCK). The specification does not fix that value (a boiler may echo the
+// refused setpoint, send 0x0000 or anything else): it is printed, and nothing decides on it. The write still counts as sent (ot_bus_track.h), deliberately: holding CH down on it
 // would turn a range disagreement into a silent no-heat, failsafe included. A zeroed record has
 // heard nothing; the flag is never cleared.
 typedef struct {
     ot_control_io_readback_t rb;
     bool                     id1_invalid;       // a DATA-INVALID answer to ID 1 has been heard
-    uint16_t                 id1_invalid_raw;   // the f8.8 value of the first of them
+    uint16_t                 id1_invalid_raw;   // the DATA-VALUE the first of them carried
 } ot_control_io_heard_t;
 
 // One reply the bus heard, of any Data-ID and any type: ot_control_io_readback() on h->rb, then

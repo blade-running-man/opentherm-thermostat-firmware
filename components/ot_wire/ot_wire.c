@@ -14,11 +14,11 @@
 //    ot_wire_result_t carries a pointer to a literal for exactly that reason.
 //
 // The component is four sources behind the one public header, cut because this
-// file had reached 665 lines against the 350-line ceiling (CLAUDE.md) with the executor settings
+// file had reached 665 lines against the 350-line ceiling (AGENTS.md) with the executor settings
 // about to land in it. One responsibility per file, and the two rules above bind every one of them:
 //   ot_wire.c            the sentences and spellings the other files answer with, and the scan
 //   ot_wire_config.c     GET and POST /api/config
-//   ot_wire_provision.c  POST and GET /api/provision
+//   ot_wire_provision.c  POST /api/provision and the status document (GET /api/status)
 //   ot_wire_command.c    the command-layer bodies
 // ot_wire_writer.h is what they share. A helper that has to leave its file goes there, never into
 // include/: the public header is the contract, and the cut did not change it.
@@ -82,7 +82,7 @@ size_t ot_wire_render_scan(const ot_wire_network_t *list, size_t count, char *ou
     return finish(&w);
 }
 
-// --- GET /api/provision --------------------------------------------------------------------
+// --- the status document (GET /api/status, the POST /api/provision reply) ------------------
 
 const char *ot_wire_state_name(ot_prov_state_t state)
 {

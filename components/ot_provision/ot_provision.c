@@ -91,7 +91,7 @@ static bool window_open_at(const ot_prov_t *s, uint32_t now)
 // Doubling, with a floor and a ceiling. The ceiling is what keeps "retry for ever" from
 // meaning "and it will notice the router came back an hour later"; there is no attempt limit
 // at all, because the alternative to retrying is rebooting and nothing here reboots because a
-// peer is absent (CLAUDE.md; limitation A11 of the retired firmware).
+// peer is absent (AGENTS.md; limitation A11 of the retired firmware).
 static uint32_t backoff_ms(const ot_prov_t *s, uint8_t attempt)
 {
     uint32_t delay = s->cfg.retry_backoff_min_ms;

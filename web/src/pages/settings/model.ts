@@ -36,7 +36,7 @@ export interface SettingsForm {
   topic_prefix: string;
   ha_discovery: boolean;
   device_name: string;
-  // Carried by the form but NOT rendered by any section yet: the settings page belongs to
+  // Carried by the form but NOT rendered by any section: the settings page belongs to
   // the panel and the clock. They are here so that a save from this page
   // round-trips them unchanged instead of clearing the zone of a device whose owner set it
   // through PATCH /api/config. DO NOT drop them to "clean up unused fields" -- that turns

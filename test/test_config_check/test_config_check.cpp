@@ -16,13 +16,13 @@
 // decided here, which is nearly all of it.
 //
 // Cut out of test/test_config/: that one file had reached 1549 lines against the
-// 600-line ceiling of a suite (CLAUDE.md, File ceiling), and a suite can only be cut along
+// 600-line ceiling of a suite (AGENTS.md, File ceiling), and a suite can only be cut along
 // directories, because PlatformIO links every .cpp of a directory into one binary. Every test that
 // came from there was moved byte for byte, not rewritten.
 //
 // The helpers below are this directory's OWN copy of exactly the ones its tests call. DO NOT
 // hoist them into a shared directory: the moment two suites share a helper, "it grew a capability
-// for suite B" becomes a way to quietly weaken suite A (CLAUDE.md, Tests). And a directory named
+// for suite B" becomes a way to quietly weaken suite A (AGENTS.md, Tests). And a directory named
 // test/test_config_common/ would itself be collected as a suite by `test_filter = test_*`.
 //
 // This directory: validation on the way in -- every ot_config_check_*() and the sentence each
@@ -193,7 +193,7 @@ void test_a_broker_host_is_a_host_and_not_a_url(void) {
 }
 
 void test_no_broker_is_a_supported_configuration(void) {
-  // The device ventilates a house whether or not anyone runs a broker, and CLAUDE.md's rule
+  // The device ventilates a house whether or not anyone runs a broker, and AGENTS.md's rule
   // that nothing reboots because a peer is absent starts here: an empty host must be storable,
   // or "I do not use MQTT" is not expressible.
   TEST_ASSERT_EQUAL(OT_CONFIG_OK, ot_config_check_host(""));
@@ -335,7 +335,7 @@ void test_every_error_has_a_sentence_and_none_of_them_quotes_the_value(void) {
   // ERR_TZ and ERR_NTP were left unasked by an earlier build, and a code appended after the
   // last one named here would go unasked the same way. The header has no count sentinel, and DO
   // NOT add one for this test -- it would be public API. ASCII only: ot_log_render() escapes every
-  // other byte, and a sentence the log ring turns into ° is one nobody can grep for (CLAUDE.md,
+  // other byte, and a sentence the log ring turns into ° is one nobody can grep for (AGENTS.md,
   // Language).
   const char *const fallback = ot_config_strerror((ot_config_err_t)999);
   TEST_ASSERT_NOT_NULL(fallback);

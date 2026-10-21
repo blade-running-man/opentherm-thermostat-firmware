@@ -10,7 +10,7 @@ language switcher -- these never touch discovery, so Home Assistant stays Englis
 This is a second table keyed by entity key, so it CAN drift from opentherm_ids.py. It does
 not, because render_entity_names_ts.py fails generation (and so the build) unless the key set
 here is exactly the registry's -- no missing key, no orphan. Add an entity to opentherm_ids.py
-and the build tells you to add its three translations here. See CLAUDE.md, "One list of
+and the build tells you to add its three translations here. See AGENTS.md, "One list of
 entities": the English name is that one list; this is its translation, pinned to it by key.
 """
 from __future__ import annotations

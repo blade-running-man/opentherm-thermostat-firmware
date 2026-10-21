@@ -26,11 +26,11 @@ static const char *TAG = "ot_bus";
 
 // The state is THREE-VALUED, and that is not pedantry.
 //
-// The first edition announced a loss on the condition `boiler_answering && fails >= N`,
-// and `boiler_answering` is false at start. So a boiler that had NEVER answered -- the
-// most common case on the first connection -- produced not a single line, and "the bus
-// works, the boiler is silent" became indistinguishable from "the bus did not start".
-// Found by running it: thirty seconds without a single line from this component.
+// DO NOT collapse it to a flag: with `boiler_answering && fails >= N` and `boiler_answering`
+// false at start, a boiler that has NEVER answered -- the most common case on the first
+// connection -- produces not a single line, and "the bus works, the boiler is silent" is
+// indistinguishable from "the bus did not start". UNKNOWN is what lets the first silence be
+// reported.
 typedef enum { LINK_UNKNOWN = 0, LINK_ANSWERING, LINK_SILENT } link_state_t;
 
 static link_state_t       s_link;

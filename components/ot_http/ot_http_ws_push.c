@@ -3,7 +3,7 @@
 
 // What goes out into /ws: the list of live sockets, the snapshot on connection, the deltas and the
 // keepalive. The second socket file rather than a continuation of ot_http_ws.c: there are the
-// routes, the ticket and the lifecycle, here is the push. The file ceiling (CLAUDE.md, 350 lines)
+// routes, the ticket and the lifecycle, here is the push. The file ceiling (AGENTS.md, 350 lines)
 // cuts along exactly this seam.
 //
 // **The shape of the frames is set by the CLIENT, not by the firmware's convenience.**
@@ -85,8 +85,9 @@ static volatile bool s_queued;
 // reconnect and receive a snapshot.
 //
 // The price: a client whose receive buffer is full at the moment of a tick loses the connection
-// instead of waiting. A frame is about two kilobytes against 5744 bytes of TCP_SND_BUF, so a full
-// buffer means a client that has not been reading for seconds, not a slow network.
+// instead of waiting. A frame is about two kilobytes against the TCP send buffer
+// (CONFIG_LWIP_TCP_SND_BUF_DEFAULT, 5760 bytes in the generated sdkconfig), so a full buffer means
+// a client that has not been reading for seconds, not a slow network.
 static int ws_send_nonblocking(httpd_handle_t hd, int fd, const char *buf, size_t len,
                                int flags)
 {

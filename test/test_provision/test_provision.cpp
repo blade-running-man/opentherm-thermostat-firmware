@@ -834,7 +834,7 @@ void test_a_second_setup_window_is_the_short_one(void) {
 // --- retrying ----------------------------------------------------------------------------------
 
 void test_retries_back_off_and_nothing_reboots(void) {
-  // CLAUDE.md: nothing reboots because a peer is absent. A router that is off for a weekend
+  // AGENTS.md: nothing reboots because a peer is absent. A router that is off for a weekend
   // must not produce a device that reboots all weekend -- that was limitation A11 of the old
   // firmware. So the answer to a failed attempt is a longer wait, for ever, and the ceiling
   // is what keeps "for ever" from meaning "and it will find the router an hour after it comes

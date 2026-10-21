@@ -13,7 +13,7 @@
 // is "the sensor is not answering". So all the columns are shown at once, side by side.
 //
 // DO NOT introduce a HAND-WRITTEN table of Data-ID names or codecs here. The single entity
-// list is produced by the generator from `tools/opentherm_ids.py` (CLAUDE.md, "One entity
+// list is produced by the generator from `tools/opentherm_ids.py` (AGENTS.md, "One entity
 // list, ever"); a hand-written second list in the frontend is precisely what that rule
 // forbids, and it will drift from the first the day the generator adds something. Names come
 // from the generated `api/entities.ts` — that is how RawTable.tsx labels them. Codecs are

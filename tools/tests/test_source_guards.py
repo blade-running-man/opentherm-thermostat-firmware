@@ -30,7 +30,7 @@ BUS = ROOT / "components" / "ot_bus" / "ot_bus.c"
 THERMOSTAT = ROOT / "components" / "ot_thermostat"
 TASK = THERMOSTAT / "ot_thermostat.c"
 # The room mailbox/registry glue the two ot_room guards below pin moved out of
-# TASK into its own file (file ceiling, CLAUDE.md) -- update THIS path, not the assertions, if it
+# TASK into its own file (file ceiling, AGENTS.md) -- update THIS path, not the assertions, if it
 # moves again.
 ROOM = THERMOSTAT / "ot_thermostat_room.c"
 HTTP_GATE = ROOT / "components" / "ot_http" / "ot_http_gate.c"

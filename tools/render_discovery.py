@@ -105,7 +105,9 @@ def _base(e, component, object_id, gated):
         "name": e.name,
         "uniq_id": f"{TOKENS['id']}_{object_id}",
         # The entity id HA creates the first time it sees the entity; HA's own default would
-        # slugify the Russian name. Stable English ids are what automations (V3) refer to.
+        # slugify the device name plus the display name, and the default device name is the
+        # owner's Russian one (ot_config_defaults.c). A stable English id derived from the key is
+        # what automations refer to.
         "def_ent_id": f"{component}.opentherm_{object_id}",
     }
     if gated:

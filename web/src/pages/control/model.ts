@@ -220,7 +220,7 @@ export function chFromEntity(answer: unknown): boolean | null {
 
 /**
  * The executor's own entities: the registry's synthetic rows (data_id null), taken from
- * the generated table -- never listed here, which would be the second entity list CLAUDE.md
+ * the generated table -- never listed here, which would be the second entity list AGENTS.md
  * forbids.
  */
 export const EXECUTOR_ENTITY_KEYS: readonly string[] = ENTITIES

@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // The provisioning documents, both directions: POST /api/provision decoded into the Wi-Fi record
-// the radio is handed, and the status document GET /api/provision renders. The two rules at the
-// top of ot_wire.c bind both -- no key is rendered, and no submitted value is quoted in an error.
+// the radio is handed, and the status document GET /api/status renders (and POST /api/provision
+// answers with). The two rules at the top of ot_wire.c bind both -- no key is rendered, and no
+// submitted value is quoted in an error.
 #include "ot_wire.h"
 
 #include <string.h>
@@ -100,7 +101,7 @@ ot_wire_result_t ot_wire_parse_provision(const char *body,
     return ok();
 }
 
-// --- GET /api/provision (the spellings it uses are ot_wire_state_name() and friends, in ot_wire.c)
+// --- the status document (the spellings it uses are ot_wire_state_name() and friends, in ot_wire.c)
 
 // OT_PROV_NEVER is not a duration and must not be rendered as one. "No time left" and "no
 // end" are opposite answers: a window with 0 ms left is closed, a window that never closes is

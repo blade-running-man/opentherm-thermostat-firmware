@@ -59,7 +59,7 @@ static unsigned s_recv_errors;
 
 // A failing socket must not become a spin. This device has ONE core and the HTTP server the
 // owner is typing into is on it; a tight loop on a socket that returns an error every time is
-// that owner watching a page never load. Nothing here reboots, whatever happens (CLAUDE.md).
+// that owner watching a page never load. Nothing here reboots, whatever happens (AGENTS.md).
 #define ERROR_BACKOFF_MS 1000
 
 static void dns_task(void *arg)

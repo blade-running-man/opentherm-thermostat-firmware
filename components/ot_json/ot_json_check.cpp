@@ -11,7 +11,7 @@
 // trust this one's verdict). Keeping the whole-document rules -- duplicates, trailing rubbish,
 // nesting -- in one file is what makes it possible to read them all without reading the getters.
 //
-// DO NOT merge back: ot_json.cpp is past CLAUDE.md's 350-line ceiling, and this was the cut.
+// DO NOT merge back: ot_json.cpp is past AGENTS.md's 350-line ceiling, and this was the cut.
 #include "ot_json_scan.h"
 
 #include <cstring>

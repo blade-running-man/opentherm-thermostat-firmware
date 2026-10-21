@@ -4,7 +4,7 @@
 // The getters: what is at THIS key, one field at a time. See ot_json.h for the contract and for
 // why this is not cJSON.
 //
-// THIS FILE IS ONE OF FOUR, and the seams are load-bearing rather than cosmetic -- CLAUDE.md's
+// THIS FILE IS ONE OF FOUR, and the seams are load-bearing rather than cosmetic -- AGENTS.md's
 // 350-line ceiling forced the cut, but it was made where the file was already jointed:
 //   * ot_json_scan.{h,cpp} -- what a TOKEN is. One walk over a string, one number grammar, shared.
 //   * ot_json_check.cpp    -- whether the WHOLE BODY is a document. Called once, before trust.

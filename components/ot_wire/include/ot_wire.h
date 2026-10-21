@@ -16,7 +16,7 @@
 // it -- the handler next door is left with "read the body, call this, send what it says".
 //
 // SEPARATE FROM ot_api TOO, although both render JSON. ot_api projects the STATE
-// MODEL, which is generated from pdo_table.py and must never grow a second list (CLAUDE.md).
+// MODEL, which is generated from pdo_table.py and must never grow a second list (AGENTS.md).
 // These five documents are the configuration surface: different source of truth, different
 // lifetime, and the field names here are ot_config's `name` column rather than an entity
 // key. They share one thing, and it is deliberately shared rather than duplicated -- the escaper
@@ -186,7 +186,7 @@ typedef struct {
 size_t ot_wire_render_scan(const ot_wire_network_t *list, size_t count, char *out,
                                  size_t cap);
 
-// --- GET /api/provision ----------------------------------------------------------------
+// --- the status document: GET /api/status, and the POST /api/provision reply ----------
 
 // Everything the status document is built from. Filled by ot_net under its lock so the
 // fields agree with one another: a state saying CONNECTED beside a failure of "wrong-password" is

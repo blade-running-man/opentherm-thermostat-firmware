@@ -65,7 +65,7 @@ static inline bool IRAM_ATTR sense(void)
 // IRAM_ATTR: the handler must execute even when the flash cache is disabled --
 // otherwise an NVS write in the middle of a conversation eats a frame. This does not
 // cure it fully (the gptimer driver itself is in IRAM only with
-// CONFIG_GPTIMER_ISR_HANDLER_IN_IRAM), and the remainder remains an open OTA question.
+// CONFIG_GPTIMER_ISR_HANDLER_IN_IRAM); a long flash erase can still delay a tick.
 static bool IRAM_ATTR on_tick(gptimer_handle_t timer,
                               const gptimer_alarm_event_data_t *event, void *arg)
 {

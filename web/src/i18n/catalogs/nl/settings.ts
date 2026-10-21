@@ -109,7 +109,7 @@ export const settings = {
 
   "settings.room.title": "Ruimtebron (MQTT)",
   "settings.room.subtitle":
-    "Een ruimtetemperatuur die Home Assistant naar het apparaat publiceert (docs/ha-room-source.md).",
+    "Een ruimtetemperatuur die Home Assistant naar het apparaat publiceert (docs/device/room-sources.md).",
   "settings.room.role.room": "Ruimte — stuurt de failsafe aan",
   "settings.room.role.ambient": "Omgeving — alleen getoond, stuurt nooit aan",
   "settings.room.stale.hint":

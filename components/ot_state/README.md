@@ -18,8 +18,8 @@ Owns:
 - The decoded value of every registry entity: number or boolean, plus availability and the
   arrival timestamp.
 - The three-valued availability model (`OK` / `INVALID` / `UNSUPPORTED`) plus the
-  "not asked yet" `UNKNOWN`, keeping DATA-INVALID and UNKNOWN-DATAID distinct even though
-  both arrive as the value `0x0000`.
+  "not asked yet" `UNKNOWN`, keeping DATA-INVALID and UNKNOWN-DATAID distinct by message type
+  alone: the value of neither reply is read.
 - The unsupported-Data-ID verdict, reached only after two UNKNOWN-DATAID answers in a row.
 - Read bounds, keyed by source Data-ID, that displace the table constants once the boiler
   reports its own range.
@@ -110,11 +110,14 @@ under the repository's `test/` tree rather than in this component directory.
 
 ## Notes
 
-- DATA-INVALID and UNKNOWN-DATAID both arrive as `0x0000` but are different diagnoses:
-  DATA-INVALID means "this entity exists, but there is no data right now" (how ID 5 answers
-  when there are no faults, and ID 27 when no outside sensor is connected); UNKNOWN-DATAID
-  means "I have no such identifier". Collapsing them would show "no faults" or "0 °C
-  outside" where neither was said.
+- DATA-INVALID and UNKNOWN-DATAID are different diagnoses, and neither carries data:
+  DATA-INVALID means "this entity exists, but there is no data right now" (how the Intergas
+  boiler answers ID 5 when there are no faults, and ID 27 when no outside sensor is
+  connected); UNKNOWN-DATAID means "I have no such identifier". The OpenTherm specification
+  does not fix their DATA-VALUE — a slave *may* send `0x0000` to a read, and may send back a
+  modified or echoed value to a write — so the model decides on the type alone and takes no
+  value from either. Collapsing them would show "no faults" or "0 °C outside" where neither
+  was said.
 - Per-consumer dirty marks (not one shared set) so the web interface collecting a change
   cannot erase it for an MQTT consumer that is momentarily disconnected.
 - `ot_state_set_virtual` is the seam for synthetic entities (negative `data_id`): the

@@ -160,7 +160,7 @@ typedef struct {
     // associates, which reconnects it, for ever.
     uint32_t address_timeout_ms;
     // Retry backoff, doubling from the first to the second. Never a reboot: a router that is
-    // off for a weekend must not produce a device that reboots all weekend (CLAUDE.md, and
+    // off for a weekend must not produce a device that reboots all weekend (AGENTS.md, and
     // limitation A11 of the retired firmware).
     // DO NOT set the minimum to 0: the delay stays 0 through every doubling, "has 0 ms passed"
     // is true on every call, and the retry becomes a station that reconnects on every tick.
@@ -347,7 +347,7 @@ uint8_t                 ot_prov_failure_reason(const ot_prov_t *s);
 
 // One spelling of each answer, decided here. Four different answers to the owner is the
 // invariant; the REST projection and the MQTT one inventing two spellings of them is how that
-// invariant gets lost (CLAUDE.md: one entity list, ever).
+// invariant gets lost (AGENTS.md: one entity list, ever).
 const char *ot_prov_failure_name(ot_prov_failure_t failure);
 
 // How long until the by-itself return brings the access point back, or OT_PROV_NEVER when

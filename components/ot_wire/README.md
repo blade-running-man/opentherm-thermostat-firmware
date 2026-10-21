@@ -12,7 +12,8 @@ with "read the body, call this, send what it says".
 
 - Parsing and rendering the configuration-surface documents:
   - `GET /api/config` (render the projection) / `POST /api/config` (decode a settings patch)
-  - `POST /api/provision` (decode the picked network) / `GET /api/provision` (status document)
+  - `POST /api/provision` (decode the picked network) and the status document it answers with,
+    which is also `GET /api/status` (there is no `GET /api/provision`)
   - `GET /api/wifi/scan` (render the networks heard)
 - Parsing the command-layer request bodies: an entity write `{"value": …}` and an operation
   body (a flat object of numeric parameters).
@@ -48,7 +49,7 @@ with "read the body, call this, send what it says".
 | `ot_wire_result_t` | `{status, err, field}`. `field` is a pointer to a **literal**, never a submitted value. `err` is meaningful only when `status == OT_WIRE_REFUSED`. |
 | `ot_wire_strerror(result)` | One owner-facing sentence with no value of any kind in it; safe to log and to send. |
 
-### Provisioning (`POST`/`GET /api/provision`)
+### Provisioning (`POST /api/provision`, `GET /api/status`)
 
 | Symbol | Contract |
 | --- | --- |
@@ -56,7 +57,7 @@ with "read the body, call this, send what it says".
 | `ot_wire_provision_t` | Everything the status document is built from; filled by the networking layer under its lock. **No PSK ever, and no SSID but the configured one.** |
 | `ot_wire_state_name(state)` / `ot_wire_mode_name(mode)` | The single spelling of a provisioning state / mode. Never NULL; unknown → `"unknown"`. |
 | `ot_wire_connack_name(code)` | The single spelling of an MQTT 3.1.1 CONNACK code (0 = "no refusal", 1–5 named; only 4/5 concern credentials). Never NULL; unknown → `"unknown refusal code"`. Takes `uint32_t`, not the esp-mqtt enum, so it builds on the host. |
-| `ot_wire_mqtt_t` | Broker connection as `GET /api/status`/`/api/provision` reports it. **Counters only** — no host/user/password. Filled directly by `ot_mqtt_link_status()`; lives here, not in the MQTT link component, so this component stays host-buildable. |
+| `ot_wire_mqtt_t` | Broker connection as `GET /api/status` reports it (the `POST /api/provision` reply omits it). **Counters only** — no host/user/password. Filled directly by `ot_mqtt_link_status()`; lives here, not in the MQTT link component, so this component stays host-buildable. |
 | `ot_wire_device_t` | `{device_id, mac, sw_version}` — borrowed strings from `esp_*` calls `ot_wire` must not make, for the same host-buildability reason. |
 | `ot_wire_render_provision(status, mqtt, device, out, cap)` | Renders the status document. Returns bytes written, or **0 = a defect to turn into a 500**, never a short document. `mqtt` and `device` may each be NULL, which **omits** their members (opposite of rendering zeros/empty strings). |
 
@@ -99,7 +100,7 @@ single file grew past the project's 350-line-per-file ceiling. One responsibilit
   `wrong_route()` constructor, the executor-owned refusal list, the room-MQTT source
   decode (`room_mqtt_enable`/`role`/`stale_s`/`ha_forwarded`), and the full
   `ot_wire_render_config()` projection.
-- **`ot_wire_provision.c`** — `POST`/`GET /api/provision`. Holds `ot_wire_parse_provision()`
+- **`ot_wire_provision.c`** — `POST /api/provision` and the status document (`GET /api/status`). Holds `ot_wire_parse_provision()`
   (the three-state PSK logic, the KEEP/CLEAR/STORE/REJECT switch, the same-SSID pairing
   check, and validation on the way *in*), `put_duration()` (renders `OT_PROV_NEVER` as
   `null`, not `0`), `put_mqtt()` (the one nested object, **rendered last** because

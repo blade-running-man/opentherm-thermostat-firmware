@@ -180,7 +180,7 @@ esp_err_t ot_config_io_erase_key(nvs_handle_t handle, const char *key)
 //
 // Shared by ot_config_nvs_load.c's migration and ot_config_nvs_save.c's every save -- moved here,
 // out of the file that used to hold both, when the room-slot fields pushed that file over
-// the 350-line ceiling and it was cut along the load/write seam it already had (CLAUDE.md, File
+// the 350-line ceiling and it was cut along the load/write seam it already had (AGENTS.md, File
 // ceiling). A retired key is erased on EVERY writable boot, not only while the schema number is
 // behind: cl_auto and cl_man_ch were retired with no schema bump, from a store already current, and
 // a current store never migrates again -- gating the erase on the schema would leave them in the

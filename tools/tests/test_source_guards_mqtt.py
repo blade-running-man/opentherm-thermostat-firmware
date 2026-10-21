@@ -14,7 +14,7 @@ it carried -- the lesson of test_source_guards.py, whose helpers these tests reu
   every reconnect, a required behaviour;
 * a reboot, the state model's lock, or a disabled reconnect in the glue;
 * the event handler doing anything but copy bytes -- the heater firmware's ABBA deadlock;
-* a secret in a log line (CLAUDE.md, "Secrets are write-only").
+* a secret in a log line (AGENTS.md, "Secrets are write-only").
 """
 import re
 from pathlib import Path

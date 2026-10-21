@@ -13,7 +13,7 @@
 //    consistent, and inside it calls ot_state_get(), which takes it again. An ordinary
 //    mutex would deadlock on the second acquisition.
 //  * ON THE HOST -- A NO-OP. The point of host tests of the state model is that this is
-//    the same code the device executes (CLAUDE.md, "Tests"), and a dependency on
+//    the same code the device executes (AGENTS.md, "Tests"), and a dependency on
 //    FreeRTOS would put an end to that. Host tests are single-threaded, there is
 //    nothing to serialize there.
 #pragma once

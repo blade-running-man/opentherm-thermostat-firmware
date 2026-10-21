@@ -11,3 +11,5 @@ dependencies.lock
 .DS_Store
 *.local
 .impeccable/
+# The VitePress dev/build cache of the docs site (docs/.vitepress/dist is covered by dist/ above).
+docs/.vitepress/cache/

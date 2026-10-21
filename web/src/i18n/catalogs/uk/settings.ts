@@ -108,7 +108,7 @@ export const settings = {
 
   "settings.room.title": "Джерело кімнати (MQTT)",
   "settings.room.subtitle":
-    "Температура кімнати, яку Home Assistant публікує на пристрій (docs/ha-room-source.md).",
+    "Температура кімнати, яку Home Assistant публікує на пристрій (docs/device/room-sources.md).",
   "settings.room.role.room": "Кімната — керує аварійним режимом",
   "settings.room.role.ambient": "Довкілля — лише показується, ніколи не керує",
   "settings.room.stale.hint":

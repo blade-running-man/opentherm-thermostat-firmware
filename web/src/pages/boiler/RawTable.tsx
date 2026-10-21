@@ -22,7 +22,7 @@ import styles from "./Boiler.module.css";
  * A row per Data-ID, a column per reading — why all of them at once is written in decode.ts.
  *
  * The name is captioned next to the number, but it is taken FROM THE GENERATED registry: a
- * hand-written table of names here would be the second entity list CLAUDE.md forbids. An
+ * hand-written table of names here would be the second entity list AGENTS.md forbids. An
  * unknown number has no name, and that is a dash, not a guess.
  */
 

@@ -89,8 +89,8 @@ def test_no_registry_string_needs_json_escaping(table):
     would break. There is nothing to escape with at runtime: ot_json_escape() writes into
     someone else's buffer and, when there is not enough room, silently writes nothing, that
     is, it cannot report the required size, on which the whole snprintf semantics in ot_api
-    rests. Besides, the names here are Cyrillic, and \\uXXXX would inflate every letter
-    sixfold.
+    rests. Besides, \\uXXXX would inflate every non-ASCII character (the degree sign of a
+    unit) sixfold.
 
     So the ban is placed where the string is still a single one -- at the entrance to the
     table. Control characters are banned for the same reason: raw, they are illegal in JSON

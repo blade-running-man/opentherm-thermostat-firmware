@@ -58,7 +58,7 @@ ot_control_err_t ot_control_check(const ot_control_cfg_t *cfg, ot_origin_t origi
         return OT_CONTROL_OUT_OF_RANGE;
     // 0 is the store's "unset"; accepted, it would switch the reconciliation off unseen. The
     // upper bound is ID 48's, asked by ot_command_encode() first. DO NOT copy it in here:
-    // a second copy of an entity's limits is the second list of entities CLAUDE.md forbids.
+    // a second copy of an entity's limits is the second list of entities AGENTS.md forbids.
     if (cmd == OT_CONTROL_CMD_DHW_SETPOINT && value <= 0)
         return OT_CONTROL_OUT_OF_RANGE;
     return OT_CONTROL_OK;

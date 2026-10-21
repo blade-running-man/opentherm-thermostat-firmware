@@ -126,7 +126,7 @@ export const settings = {
   // --- RoomMqttSection + room.ts ---------------------------------------------------------------
   "settings.room.title": "Room source (MQTT)",
   "settings.room.subtitle":
-    "A room temperature Home Assistant publishes to the device (docs/ha-room-source.md).",
+    "A room temperature Home Assistant publishes to the device (docs/device/room-sources.md).",
   "settings.room.role.room": "Room — steers the failsafe",
   "settings.room.role.ambient": "Ambient — shown only, never steers",
   "settings.room.stale.hint":

@@ -42,7 +42,7 @@ extern "C" {
 // ESP_FAIL if the socket cannot be opened or bound, ESP_ERR_NO_MEM if the task cannot be
 // created. It never aborts and never reboots: a captive portal that cannot start is a device the
 // owner reaches by typing an address, and a device that reboots is a device the owner does not
-// reach at all (CLAUDE.md).
+// reach at all (AGENTS.md).
 esp_err_t ot_captive_dns_start(const uint8_t address[4]);
 
 // Asks the task to finish and waits, briefly, for it to. Safe to call when nothing is running.

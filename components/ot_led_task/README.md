@@ -34,7 +34,7 @@ Header: `include/ot_led_task.h`.
 | Function | Contract |
 | --- | --- |
 | `ot_led_task_start(board)` | Sets up the strip, does the boot flash, spawns the task. Call only when `board->rgb.gpio >= 0` (the caller guards). Returns the `led_strip` init error, `ESP_ERR_NO_MEM` if the task did not spawn, else `ESP_OK`. |
-| `ot_led_note_ota(active)` | Sets/clears the OTA-active flag the task reads. **Dormant in v1** — nothing calls it true (no OTA subsystem yet). A future OTA write path calls it `true` around the write to get the fast-blue "do not power off" pattern; a read-only observation that must not alter OTA behaviour. See `docs/led-status-indicator.md`, "Out of scope for v1". |
+| `ot_led_note_ota(active)` | Sets/clears the OTA-active flag the task reads. **Dormant** — nothing calls it true (no OTA subsystem yet). A future OTA write path calls it `true` around the write to get the fast-blue "do not power off" pattern; a read-only observation that must not alter OTA behaviour. See `docs/device/indication.md`, "Out of scope". |
 
 ## Implementation
 

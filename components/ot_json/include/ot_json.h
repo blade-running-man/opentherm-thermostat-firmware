@@ -26,7 +26,7 @@
 // THE WRITER HALF IS NOT NEW. ot_json_escape() is the escaper the state API has always used,
 // moved here so that there is ONE set of rules for \u, for surrogate pairs and for control
 // characters -- ot_api_escape_json() now forwards to it. A second implementation would be a
-// second set of rules, which is CLAUDE.md's "one entity list, ever" applied to an encoding.
+// second set of rules, which is AGENTS.md's "one entity list, ever" applied to an encoding.
 #pragma once
 
 #include <stdbool.h>
@@ -129,7 +129,7 @@ ot_json_read_t ot_json_f32(const char *doc, const char *key, float *out);
 //
 // This is the only reader here that learns a key the firmware did not already know, and it exists
 // so that operation bodies -- which name their own parameters -- can be read without a second
-// parser being written next to this one (CLAUDE.md's one-list rule, applied to a grammar).
+// parser being written next to this one (AGENTS.md's one-list rule, applied to a grammar).
 //
 // TOO_LONG rather than a truncated name, for ot_json_string's reason: a shortened key is a
 // different key, and the caller would match it against one it recognises.

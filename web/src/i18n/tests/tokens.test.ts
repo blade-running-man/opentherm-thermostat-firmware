@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Oleksandr Slukovskyi (@blade-running-man)
 // SPDX-License-Identifier: Apache-2.0
 
-// The web-side echo of "one list of entities" (CLAUDE.md): every firmware token union value the
+// The web-side echo of "one list of entities" (AGENTS.md): every firmware token union value the
 // SPA declares (api/control.ts ControlState/ControlReason/mode, api/entities.ts Availability)
 // must have a matching token.* catalog key, so the firmware's stable vocabulary and the
 // catalog's translations cannot silently drift apart. Written before en/tokens.ts is filled in

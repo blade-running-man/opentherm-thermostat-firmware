@@ -110,7 +110,7 @@ export const settings = {
 
   "settings.room.title": "Raumquelle (MQTT)",
   "settings.room.subtitle":
-    "Eine Raumtemperatur, die Home Assistant an das Gerät veröffentlicht (docs/ha-room-source.md).",
+    "Eine Raumtemperatur, die Home Assistant an das Gerät veröffentlicht (docs/device/room-sources.md).",
   "settings.room.role.room": "Raum — steuert den Failsafe",
   "settings.room.role.ambient": "Umgebung — nur angezeigt, steuert nie",
   "settings.room.stale.hint":

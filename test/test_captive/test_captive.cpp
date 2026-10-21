@@ -162,7 +162,7 @@ void test_a_probe_answer_is_never_cached(void) {
 
 void test_the_table_is_seven_paths_and_the_lookup_finds_every_one(void) {
   // The count is asserted so that adding a path is a deliberate act with a test edit attached,
-  // and so that the lookup and the table can never drift into two lists (CLAUDE.md).
+  // and so that the lookup and the table can never drift into two lists (AGENTS.md).
   size_t count = 0;
   const ot_captive_answer_t *table = ot_captive_table(&count);
   TEST_ASSERT_EQUAL_UINT(7, count);

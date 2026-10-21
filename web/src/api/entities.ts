@@ -100,7 +100,7 @@ export const ENTITIES = [
 ] as const satisfies readonly EntityMeta[];
 
 // Derived, not listed a second time: a hand-written union of the keys would be
-// exactly that second list of entities which CLAUDE.md forbids.
+// exactly that second list of entities which AGENTS.md forbids.
 export type EntityKey = (typeof ENTITIES)[number]["key"];
 export type EntityKind = (typeof ENTITIES)[number]["kind"];
 

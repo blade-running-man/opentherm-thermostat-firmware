@@ -16,7 +16,7 @@ import styles from "./sections.module.css";
  * behind the front panel of a running ventilation unit, is a way to lose the device -- which
  * is the reason the password is optional at all.
  *
- * The gesture is described without naming a pin: CLAUDE.md keeps GPIO numbers inside
+ * The gesture is described without naming a pin: AGENTS.md keeps GPIO numbers inside
  * components/board, and "the button on the device" is what the owner can act on anyway. The
  * "after it has started" half is the part that must not be dropped -- that button is also the
  * download strap, so holding it while power comes up enters the bootloader instead and looks

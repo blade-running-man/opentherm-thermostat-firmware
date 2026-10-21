@@ -8,14 +8,14 @@
 // MQTT rather than repointing it.
 //
 // Cut out of test/test_config_apply/: that file had reached 628 lines against the
-// 600-line ceiling of a suite (CLAUDE.md, File ceiling), and a suite can only be cut along
+// 600-line ceiling of a suite (AGENTS.md, File ceiling), and a suite can only be cut along
 // directories, because PlatformIO links every .cpp of a directory into one binary. The broker-pair
 // cases were the clean seam and were moved byte for byte, not rewritten. The Wi-Fi and
 // other config-apply cases stayed in test/test_config_apply/.
 //
 // The helpers below are this directory's OWN copy of exactly the ones its tests call. DO NOT hoist
 // them into a shared directory: the moment two suites share a helper, "it grew a capability for
-// suite B" becomes a way to quietly weaken suite A (CLAUDE.md, Tests). And a directory named
+// suite B" becomes a way to quietly weaken suite A (AGENTS.md, Tests). And a directory named
 // test/test_config_common/ would itself be collected as a suite by `test_filter = test_*`.
 #include <unity.h>
 

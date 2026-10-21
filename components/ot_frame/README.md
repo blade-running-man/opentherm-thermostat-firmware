@@ -84,10 +84,12 @@ Two source files, both trivial and branch-light:
 
 ## Tests
 
-The component has no host suite of its own inside this directory. Because it is a pure
-ESP-IDF component and PlatformIO library, any host suite in another directory that
-exercises it compiles these same sources unchanged, so the device and the tests run
-identical code.
+Host suite `test/test_ot_frame`: the parity rule, frame assembly (spare bits zero, parity set
+when needed), the encode/decode round trip, a flipped bit rejected with the output left
+untouched, the reserved message type passed through, and the value codecs (f8.8 including
+saturation, s16, the byte pair, the flag bytes). Because the component is a pure ESP-IDF
+component and PlatformIO library, the suite compiles these same sources unchanged, so the device
+and the tests run identical code.
 
 ## Notes
 

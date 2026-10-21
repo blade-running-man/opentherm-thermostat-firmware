@@ -37,9 +37,9 @@ static bool path_under(const char *path, const char *prefix)
     return strncmp(path, prefix, n) == 0 && path[n] != '\0';
 }
 
-// Changing the ventilation, as distinct from changing the device. The difference is what makes the
-// exemption below defensible: a fan speed is what anybody who can walk up to the unit can already
-// change, and an OTA image is not.
+// Commanding the heating, as distinct from changing the device. The difference is what makes the
+// exemption below defensible: a setpoint is what anybody who can walk up to the boiler's own panel
+// can already change, and an OTA image is not.
 //
 // NOT every operation under "/api/ops/", though the path cannot tell which. One that HALTS the
 // conversation with the boiler is outside this exemption whatever its name, and that half of the
@@ -57,7 +57,7 @@ ot_http_decision_t ot_http_check(ot_http_method_t method, const char *path,
         return OT_HTTP_FORBIDDEN;
 
     if (method == OT_HTTP_GET) {
-        // Reading is open until the owner draws a boundary. Ventilation temperatures are
+        // Reading is open until the owner draws a boundary. Boiler temperatures are
         // not worth locking someone out of their own device over, and on the access point
         // the setup page has to be reachable by definition.
         if (!ctx.password_set)
@@ -70,8 +70,8 @@ ot_http_decision_t ot_http_check(ot_http_method_t method, const char *path,
 
     if (!ctx.provisioned) {
         // Radio proximity is not authorisation. The one thing an unprovisioned device must
-        // accept is a network to join, or it is a brick; provisioning puts a clock on that
-        // window, which is what the ESPHome firmware's design decision W12 was for.
+        // accept is a network to join, or it is a brick; provisioning (ot_provision) puts a
+        // clock on that window.
         if (!path_is(path, "/api/provision"))
             return OT_HTTP_FORBIDDEN;
 
@@ -89,15 +89,17 @@ ot_http_decision_t ot_http_check(ot_http_method_t method, const char *path,
         // Setting the first password is one of two writes that get through, or the device could
         // never be secured: every write needs a password and the password is a write.
         //
-        // The other is CONTROLLING THE VENTILATION, and it is here because the password is
+        // The other is COMMANDING THE HEATING, and it is here because the password is
         // optional and off by default while a device without one is a supported
         // configuration. With only /api/config exempt, those two facts together meant every
         // command answered 403 on a device out of the box, until the owner set a password nothing
         // told them to set -- which is a feature that does not work rather than a device that is
         // secure. The owner chose this trade deliberately.
         //
-        // WHAT IT COSTS, said plainly: anybody on the household LAN can change the ventilation.
-        // That is the same thing anybody who can walk up to the unit's own screen can already do.
+        // WHAT IT COSTS, said plainly: anybody on the household LAN can command the heating,
+        // within the bounds ot_command enforces. That is the same thing anybody who can walk up
+        // to the boiler's own panel can already do. An operation that halts the bus is not part
+        // of this exemption (ot_http_check_op() below).
         //
         // The third is THE TICKET THAT OPENS THE SOCKET, and it is here for the reason that put
         // the commands here rather than for a new one. /ws carries nothing GET /api/state does not
@@ -110,7 +112,7 @@ ot_http_decision_t ot_http_check(ot_http_method_t method, const char *path,
         //
         // Everything else still fails CLOSED -- an OTA endpoint answering before anyone has
         // claimed the device is unauthenticated code execution on the LAN, and this firmware does
-        // not verify image signatures. That is a different question from a fan speed.
+        // not verify image signatures. That is a different question from a setpoint.
         if (path_is(path, "/api/config") || path_is_a_command(path) ||
             path_is(path, "/api/ws-ticket"))
             return OT_HTTP_ALLOW;

@@ -108,9 +108,24 @@ static op_refusal_t op_linetest(const ot_wire_params_t *p)
     // The numbers are taken from ot_bus.h rather than written out here again: two writings of one
     // limit will one day diverge, and diverge silently -- a 422 for what the bus would accept, or a
     // 409 for what it would reject.
-    if (duration <= 0 || duration > (float)OT_BUS_TEST_MAX_MS)
+    //
+    // The floats are compared against the range the bus sees AFTER the (uint32_t) cast below, which
+    // truncates toward zero. The bus refuses duration_ms == 0 (ot_bus.c, ot_bus_line_test(): the
+    // `duration_ms == 0u` test), and every float in (0, 1) truncates to exactly that 0. So the
+    // floor here is 1.0f. DO NOT "simplify" it back to `duration <= 0`: {"duration_ms":0.5} passes
+    // that, reaches the bus as 0, and the client gets a 409 "line test already running" with no test
+    // running. half_period_ms has no such hole -- its bus floor (100) and both ceilings are whole,
+    // so truncation cannot move an accepted float across them -- and is checked in the same form
+    // only so the two read alike.
+    //
+    // Written as `!(lo <= x && x <= hi)`, not `x < lo || x > hi`: every comparison with a NaN is
+    // false, so the second form lets a NaN through to a cast whose result is undefined, while the
+    // first refuses it. ot_json_f32() cannot produce a NaN or an infinity (its grammar is JSON's,
+    // and an overflow is OUT_OF_RANGE); the form refuses one anyway, so this check does not
+    // depend on that parser staying so.
+    if (!(duration >= 1.0f && duration <= (float)OT_BUS_TEST_MAX_MS))
         return (op_refusal_t){"422 Unprocessable Content", "duration_ms outside 1..30000"};
-    if (half < (float)OT_BUS_TEST_HALF_MIN_MS || half > (float)OT_BUS_TEST_HALF_MAX_MS)
+    if (!(half >= (float)OT_BUS_TEST_HALF_MIN_MS && half <= (float)OT_BUS_TEST_HALF_MAX_MS))
         return (op_refusal_t){"422 Unprocessable Content", "half_period_ms outside 100..5000"};
     // The refusal must reach the client. Swallowing it means showing in the interface that the
     // test has started when it has not -- and the owner will spend twenty seconds looking at a

@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Oleksandr Slukovskyi (@blade-running-man)
 // SPDX-License-Identifier: Apache-2.0
 
-// The room-MQTT source's four settings (docs/ha-room-source.md), between GET /api/config and the
+// The room-MQTT source's four settings (docs/device/room-sources.md), between GET /api/config and the
 // card's boxes.
 //
 // Pure, like executor.ts beside it, and built the same way: tests/room.test.ts reaches every
@@ -79,7 +79,7 @@ export function roomFormFrom(cfg: DeviceConfig): RoomForm {
 
 /**
  * `room_mqtt_stale_s`'s text as the whole number of seconds the device stores, or null when there
- * is none. Whether the number is LEGAL -- 10..65535 (docs/ha-room-source.md) -- is
+ * is none. Whether the number is LEGAL -- 10..65535 (docs/device/room-sources.md) -- is
  * ot_config_apply()'s answer, and its 422 says so; DO NOT copy that bound here, for the same
  * reason parseExecutorField() does not copy the executor's (executor.ts).
  */

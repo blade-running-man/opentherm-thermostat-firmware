@@ -4,7 +4,7 @@
 """Generates the entity registry from tools/opentherm_ids.py.
 
 Four outputs, all forbidden to edit by hand. A bug in an output is fixed HERE, not in the
-output: editing a generated file is a second list of entities, which CLAUDE.md forbids,
+output: editing a generated file is a second list of entities, which AGENTS.md forbids,
 and it will silently disappear on the next build.
 
 This file is the driver: it owns the command line and where each output is written. The
@@ -33,8 +33,8 @@ from render_ts import render_ts_types  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 C_OUT = ROOT / "components" / "ot_registry" / "include" / "registry_generated.h"
-# ONLY entities.ts is generated. The neighbouring web/src/api/types.ts is hand-written:
-# what is there is the device configuration -- WiFi, broker, password -- about which the
+# Of web/src/api/, ONLY entities.ts is generated. The neighbouring web/src/api/config.ts is
+# hand-written: what is there is the device configuration -- WiFi, broker, password -- about which the
 # table knows nothing, and generating into it would erase those types on the very first run.
 TS_OUT = ROOT / "web" / "src" / "api" / "entities.ts"
 # The Home Assistant discovery documents, beside the component that fills them in.

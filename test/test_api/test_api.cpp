@@ -149,7 +149,7 @@ static void test_only_an_enum_carries_options(void)
     // control_mode, control_state and room_source -- the registry's whole enum count.
     // A fourth kind that renders "options" is either a new enum (bump this) or a bug leaking
     // the field onto a non-enum row (opentherm_ids.py's VIRTUALS is the single source, per
-    // "one list of entities" -- CLAUDE.md).
+    // "one list of entities" -- AGENTS.md).
     TEST_ASSERT_EQUAL_UINT(3, n);
 }
 

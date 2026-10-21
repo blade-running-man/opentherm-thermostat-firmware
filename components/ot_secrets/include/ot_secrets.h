@@ -19,7 +19,7 @@ extern "C" {
 #endif
 
 // What a set secret reads back as. It must match CONFIG_UNCHANGED in
-// web/src/api/client.ts, and it is a published string -- see ot_secret_decide().
+// web/src/api/secrets.ts, and it is a published string -- see ot_secret_decide().
 #define OT_SECRET_SENTINEL "__UNCHANGED__"
 
 // True when a key names something that must never be sent to a client.

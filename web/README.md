@@ -22,9 +22,9 @@ from a dynamic simulator (`mock/`) and needs no `.env.local`.
 ## Rules
 
 - **No privileged endpoints.** Everything this UI calls must be reachable by any
-  other client through the same API (see `../docs/firmware-design.md`). A path that exists
+  other client through the same API (see `../docs/interfaces/web-ui.md`). A path that exists
   only for a screen here is a bug in the API, not a shortcut.
 - **`api/entities.ts` is generated**, not hand-edited: the single source of truth for
-  entities is `tools/opentherm_ids.py` (CLAUDE.md, "One entity list, ever").
+  entities is `tools/opentherm_ids.py` (AGENTS.md, "One entity list, ever").
 - **Secrets are never rendered into an input.** See `SecretField.tsx` -- the device
   returns a sentinel in place of a stored password and the field must stay empty.

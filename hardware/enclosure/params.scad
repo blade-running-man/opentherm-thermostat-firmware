@@ -1,9 +1,9 @@
 // Enclosure parameters for the LOLIN C3 mini + DIYLess OpenTherm Master Shield stack.
 //
 // Values derived from datasheets/standard parts and from the owner's photos of the real
-// assembly (see docs/enclosure-design.md section 2). Change a number here and re-render --
+// assembly (see docs/device/enclosure.md, "Dimensions"). Change a number here and re-render --
 // nothing in case.scad is hard-coded. Kept separate from the geometry so both files stay well
-// under the 350-line hand-written-source ceiling (CLAUDE.md).
+// under the 350-line hand-written-source ceiling (AGENTS.md).
 
 // ---- Which part to render -------------------------------------------------
 part = "assembly";      // "base" | "lid" | "assembly" (preview with a translucent board mock)

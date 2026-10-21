@@ -4,7 +4,7 @@
 """The single list of OpenTherm entities. This is the only thing that gets edited.
 
 REST, the MQTT topics, discovery for Home Assistant and the frontend types are generated
-from here (CLAUDE.md, "One list of entities, ever").
+from here (AGENTS.md, "One list of entities, ever").
 
 The read and write direction is verified against §5.4 of the OpenTherm 2.2 specification --
 that is the only source where every identifier is marked R- / -W / RW. Neither
@@ -27,8 +27,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 SCHEMA_VERSION = 1
-SCHEMA_VERSION_KEY = "schema_version"
-SCHEMA_VERSION_NAME = "Schema version"
 
 C = "°C"
 PCT = "%"
@@ -106,7 +104,7 @@ class Virtual:
     """
 
     key: str
-    name: str                      # English, like every display name (CLAUDE.md)
+    name: str                      # English, like every display name (AGENTS.md)
     kind: str                      # "switch" | "sensor" | "binary" | "enum"
     writable: bool = False
     control: str | None = None     # "CH_ENABLE" | "DHW_ENABLE" | "SEASON" -- ot_control_cmd_t

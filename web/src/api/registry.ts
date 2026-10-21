@@ -4,7 +4,7 @@
 // The entity registry and its values: `/api/state`, `/api/entities[/<key>]` and writing.
 //
 // A separate module rather than lines in client.ts, for the same reason otRaw.ts became a
-// separate module: that one is up against the 350-line ceiling (CLAUDE.md). request() and
+// separate module: that one is up against the 350-line ceiling (AGENTS.md). request() and
 // requestVoid() are imported from there, so ApiError and the rule "an unreadable body is a
 // failure" are the very same here, and no second API client appears.
 //

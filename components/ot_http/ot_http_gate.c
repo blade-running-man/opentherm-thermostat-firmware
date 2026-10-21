@@ -68,8 +68,11 @@ static bool host_ok(httpd_req_t *req)
     return ot_http_host_ok(host, sta_ip, ap_mode);
 }
 
-// Every handler goes through this. There is no second door: a handler that forgets to call
-// it is the bug this arrangement exists to make obvious.
+// Every handler that serves device data or accepts a write goes through this: a handler that
+// forgets to call it is the bug this arrangement exists to make obvious. Two routes are outside
+// it on purpose: GET /ws, admitted by its single-use ticket (issued only by the gated
+// POST /api/ws-ticket), and the captive probe answers, which are constant bytes from
+// ot_captive's table. DO NOT add a third without saying here why it is safe.
 bool ot_http_allowed(httpd_req_t *req)
 {
     char path[128];

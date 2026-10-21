@@ -29,8 +29,8 @@ static void test_read_ack_lands_decoded(void)
     TEST_ASSERT_EQUAL_UINT32(1000, v.updated_ms);
 }
 
-// The main danger here: DATA-INVALID and UNKNOWN-DATAID
-// both arrive with the value 0x0000. Merging them into one means showing "it is 0 °C
+// The main danger here: DATA-INVALID and UNKNOWN-DATAID carry
+// no data (often 0x0000; the spec does not fix the value). Merging them into one means showing "it is 0 °C
 // outside" where there is no outside sensor at all.
 static void test_data_invalid_is_not_a_value(void)
 {

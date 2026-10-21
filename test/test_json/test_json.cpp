@@ -328,7 +328,7 @@ void test_a_non_number_is_not_read_as_one(void) {
 
 // Operation bodies name their own parameters, so a reader that can only ask "is `from` there"
 // cannot read one. This is the ONLY way to learn a key this firmware did not already know, and
-// it exists so that ot_wire never grows a second parser (CLAUDE.md's one-list rule applied to a
+// it exists so that ot_wire never grows a second parser (AGENTS.md's one-list rule applied to a
 // grammar).
 void test_keys_come_back_in_document_order(void) {
   char name[24];
@@ -409,7 +409,7 @@ void test_a_null_key_or_buffer_is_answered_rather_than_dereferenced(void) {
 void test_the_escaper_is_the_one_the_api_publishes(void) {
   // ot_api_escape_json() forwards here. There is ONE set of rules for \u, for surrogate
   // pairs and for control characters in this firmware, and a second implementation would be a
-  // second set -- which is CLAUDE.md's "one entity list, ever" applied to an encoding.
+  // second set -- which is AGENTS.md's "one entity list, ever" applied to an encoding.
   char out[64];
   TEST_ASSERT_TRUE(ot_json_escape("a\"b", out, sizeof out) > 0);
   TEST_ASSERT_EQUAL_STRING("a\\\"b", out);

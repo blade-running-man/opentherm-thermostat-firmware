@@ -7,10 +7,10 @@
 //
 // Cut out of test/test_config_apply/: that suite had reached 576 of its
 // 600 lines and these rules were about to grow, and a suite can only be cut along directories,
-// because PlatformIO links every .cpp of a directory into one binary (CLAUDE.md, File ceiling).
+// because PlatformIO links every .cpp of a directory into one binary (AGENTS.md, File ceiling).
 // The helpers below are this directory's OWN copy of the ones its tests call. DO NOT hoist them
 // into a shared directory: once two suites share a helper, "it grew a capability for suite B"
-// becomes a way to quietly weaken suite A (CLAUDE.md, Tests).
+// becomes a way to quietly weaken suite A (AGENTS.md, Tests).
 //
 // Only the PURE half of ot_config is reached here, as in every test_config_* directory.
 #include <unity.h>

@@ -1,6 +1,6 @@
 // Parametric enclosure for the LOLIN C3 mini + DIYLess OpenTherm Master Shield stack.
 //
-// Geometry only -- all numbers live in params.scad. Rationale is in docs/enclosure-design.md;
+// Geometry only -- all numbers live in params.scad. Rationale is in docs/device/enclosure.md;
 // the load-bearing facts a reader needs while editing this file (all confirmed by the owner's
 // photos of the real assembly):
 //
@@ -98,19 +98,25 @@ module lid() {
   }
 }
 
-// LED window over the WS2812B: a thin translucent membrane by default (leaves led_win_membrane
-// of plate), or a clean through-hole if led_through.
+// LED window over the WS2812B. In this frame the lid plate spans z = 0 (inner face, over the
+// boards) to z = lid_t (outer face), so the pocket is cut from BELOW: by default it stops
+// led_win_membrane short of the outer face and leaves a thin translucent skin that diffuses the
+// LED; led_through cuts on past the outer face for a clean hole (light pipe or resin drop).
+// DO NOT start the cut at the membrane height and run it up to lid_t: that removes the outer skin
+// and leaves the plate under it, which is a through-hole whatever led_through says.
 module led_window() {
-  keep = led_through ? 0 : led_win_membrane;   // plate left on the outer (top) face
-  translate([led_x, led_y, keep - 1])
-    cylinder(h = lid_t - keep + 1, d = led_win_d);
+  top = led_through ? lid_t + 1 : lid_t - led_win_membrane;
+  translate([led_x, led_y, -1])
+    cylinder(h = top + 1, d = led_win_d);
 }
 
 // Poke-holes over RST and BOOT (C3 faces up): press the button with a pin through the hole.
+// (s*btn_hole_x, btn_hole_y) is the button's CENTRE, so the cube is centred on it. DO NOT anchor
+// it at a corner -- that shifts each hole by half its width and pushes it into the rim.
 module button_holes() {
   for (s = [-1, 1])
-    translate([s*btn_hole_x, btn_hole_y, -1])
-      cube([btn_hole_w, btn_hole_w, lid_t + 2], center = false);
+    translate([s*btn_hole_x, btn_hole_y, lid_t/2])
+      cube([btn_hole_w, btn_hole_w, lid_t + 2], center = true);
 }
 
 // Slots in the lid, kept in the back half so they never clash with the LED/button holes.
@@ -135,7 +141,7 @@ module board_mock() {
   // USB-C on the C3 top front edge
   color([0.70, 0.70, 0.70, 0.90]) translate([0,  board_l/2 - 3, z_c3_top + 1.6]) cube([9, 7, 3.2], center = true);
   // WS2812B on the C3 top
-  color([0.20, 0.85, 0.75, 0.95]) translate([led_x, led_y, z_c3_top + 0.8]) cube([5, 5, 1.6], center = true);
+  color([0.20, 0.85, 0.75, 0.95]) translate([led_x, led_y, z_c3_top + 0.8]) cube([3.5, 3.5, 1.6], center = true);
 }
 
 // ---- Part selector --------------------------------------------------------

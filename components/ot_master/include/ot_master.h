@@ -53,7 +53,9 @@ typedef struct {
 // Call once, before ot_bus_start(). Returns ESP_OK or a driver error.
 esp_err_t ot_master_init(const board_t *board);
 
-// One conversation. **BLOCKS the calling task for up to ~1.2 s.**
+// One conversation. **BLOCKS the calling task**: the 34 ms request, then up to the 900 ms
+// reception budget -- about 0.93 s when the boiler does not answer -- and never longer than
+// the 1.5 s wait ceiling, reached only if the timer never notifies at all.
 //
 // May be called ONLY from the ot_bus task. There is no such thing as two masters on the
 // bus: overlapping conversations lose both frames, and it will show up as rare

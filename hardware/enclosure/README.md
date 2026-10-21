@@ -2,7 +2,7 @@
 
 A parametric, 3D-printable case for the two-board stack — the **LOLIN C3 mini on top**, the
 **DIYLess OpenTherm Master Shield below**. Free-standing, two parts, no fasteners. The design and the
-rationale for every choice are in [`docs/enclosure-design.md`](../../docs/enclosure-design.md);
+rationale for every choice are in [`docs/device/enclosure.md`](../../docs/device/enclosure.md);
 this README is how to render, print, and assemble it.
 
 ![Enclosure — exterior and cutaway](preview.png)
@@ -82,7 +82,7 @@ openscad -o cut.png -D 'part="assembly"' -D 'cut=true' hardware/enclosure/case.s
 ## Tuning (first print)
 
 The model ships with values from datasheets and from the owner's photos (see
-`docs/enclosure-design.md` §2). A few are worth a caliper check on the assembled stack, because
+`docs/device/enclosure.md`, "Dimensions"). A few are worth a caliper check on the assembled stack, because
 they set the height and vary with build choices — override them on the command line or edit
 `params.scad`:
 

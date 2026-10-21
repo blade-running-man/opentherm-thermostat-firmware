@@ -88,9 +88,9 @@ static esp_err_t write_gate(httpd_req_t *req)
     if (!ot_http_allowed(req))
         return ESP_OK;
 
-    // The policy let it through; there is simply nothing behind it yet. Every write that exists
+    // The policy let it through; there is simply nothing behind it. Every write that exists
     // -- /api/config, /api/provision, /api/ops/<name>, /api/ws-ticket and /api/entities/<key> --
-    // is registered above this gate; /api/ota is not yet implemented. 501 says that honestly instead
+    // is registered above this gate; there is no OTA route. 501 says that honestly instead
     // of pretending the request was applied.
     httpd_resp_set_status(req, "501 Not Implemented");
     httpd_resp_set_type(req, "application/json");
@@ -158,7 +158,7 @@ esp_err_t ot_http_start(const ot_http_config_t *config)
          .handler          = ot_http_ws_handler,
          .is_websocket     = true,
          .ws_pre_handshake_cb = ot_http_ws_pre_handshake},
-        // /api/ota is not yet implemented. It must go ABOVE write_gate, otherwise the
+        // DO NOT register a new write route (an OTA handler included) below write_gate: the
         // catch-all answers 501 before the request reaches the handler.
         // Catch-all for writes, so the policy is applied to every one of them rather than
         // to the ones that happen to have a handler.

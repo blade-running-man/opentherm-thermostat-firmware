@@ -5,7 +5,7 @@
 // around it means. Private to components/ot_json -- it is NOT under include/ and nothing outside
 // this directory may include it. The public contract is ot_json.h and only ot_json.h.
 //
-// WHY THIS SEAM EXISTS. ot_json.cpp was past CLAUDE.md's 350-line ceiling,
+// WHY THIS SEAM EXISTS. ot_json.cpp was past AGENTS.md's 350-line ceiling,
 // so it was cut where it was already jointed: three callers -- ot_json_check (is this a
 // document at all), the getters (what is at this key), ot_json_escape (the writer) -- share ONE
 // walk over a string and ONE number grammar. That sharing was the original design decision, stated

@@ -18,7 +18,7 @@
 // One directory -- one suite: PlatformIO links all the .cpp files of a directory into one
 // binary, so two main()s in one directory would collide. Provisioning lives in
 // test_wire_provision, the network scan and the status document in test_wire_status. Cut apart
-// when the original suite went over the 600-line ceiling (CLAUDE.md, "File ceiling").
+// when the original suite went over the 600-line ceiling (AGENTS.md, "File ceiling").
 
 #include <unity.h>
 
@@ -235,7 +235,7 @@ void test_the_config_document_carries_every_key_the_page_reads(void) {
 }
 
 void test_no_stored_secret_appears_in_the_config_document(void) {
-  // The property that unblocks a single universal binary (CLAUDE.md). A stored
+  // The property that unblocks a single universal binary (AGENTS.md). A stored
   // password is never returned by any projection; reads get a sentinel.
   ot_config_t cfg;
   ot_config_defaults(&cfg, "aabbccddeeff");

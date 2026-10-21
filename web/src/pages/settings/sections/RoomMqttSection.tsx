@@ -20,7 +20,7 @@ import { Notice } from "./Notice";
 import styles from "./sections.module.css";
 
 /**
- * The MQTT room source (docs/ha-room-source.md): an inbound topic Home Assistant publishes to,
+ * The MQTT room source (docs/device/room-sources.md): an inbound topic Home Assistant publishes to,
  * off by default because enabling it changes what the bounded failsafe does. Its own card and its
  * own Save, for the same reason the controller card has its own: only the boxes the owner changed
  * are sent (room.ts), never the whole document the broker card sends.

@@ -112,25 +112,26 @@ compiled test.
 ## Notes
 
 - **The OpenTherm adapter these pins drive** — the DIYLess OpenTherm Master Shield — is
-  documented in `docs/diyless-opentherm-master-shield.md`: its form factor, the D1-mini header
+  documented in `docs/reference/diyless-opentherm-master-shield.md`: its form factor, the D1-mini header
   positions the OT lines land on, the boiler (`B1/B2`) and DS18B20 (`T`) terminals, and the
   verified BOM (it is the SMD build of Ihor Melnyk's OpenTherm Adapter). Read it for *why* the
   pin mapping below is what it is.
-- **The two boards themselves** are documented in `docs/esp32-c3-mini.md` (LOLIN/WEMOS C3 mini,
-  target `esp32c3`) and `docs/esp32-c6-supermini.md` (ESP32-C6 SuperMini, target `esp32c6`):
+- **The two boards themselves** are documented in `docs/reference/esp32-c3-mini.md` (LOLIN/WEMOS C3 mini,
+  target `esp32c3`) and `docs/reference/esp32-c6-supermini.md` (ESP32-C6 SuperMini, target `esp32c6`):
   chip/board specs, the full pinout with strapping and native-USB traps, and a "this project's
   usage" table that reproduces each descriptor. They anchor on GPIO numbers (the C3's silkscreen
   D-labels are disputed between vendor sources — see that doc).
 - **Strapping-pin cautions.** C3: `GPIO8` (`ot_in`) is a strapping pin but does not block
-  ordinary boot from flash (that needs GPIO2 = 1 and GPIO9 = 1); the OpenTherm line idles LOW,
+  ordinary boot from flash (that is selected by GPIO9 = 1); the OpenTherm line idles LOW,
   so a connected-but-silent boiler holds `GPIO8` down permanently — booting is unaffected, but
   entering flashing mode with the boiler connected will likely need BOOT held. On both boards
   `GPIO9` (button) is the boot-mode-select strapping pin: holding it low at reset drops the
   chip into the ROM bootloader. C6: `GPIO15` (status LED) is a JTAG-select strapping pin, but
   it has no internal pull-up and the LED load does not override its level at reset, so it is
   safe as an output.
-- On the C3, the strapping hazard to watch is GPIO2 (D1-mini header position D0), which must be
-  HIGH at reset. The shield does not occupy D0; verify with a multimeter.
+- On the C3, GPIO2 (D1-mini header position D0) is a strapping pin that does not select the boot
+  mode, but the datasheet recommends a pull-up against glitches; the board has a 10 kΩ pull-up (R4).
+  Keep it from being driven low at reset. The shield does not occupy D0; verify with a multimeter.
 - The C3 `onewire_gpio` is **GPIO1** (shield position D5), confirmed by a bench probe; an
   earlier assumption of GPIO4 (position D7) was wrong. The C6 has no DS18B20 wired yet, so its
   `onewire_gpio` is `-1`; set it to a confirmed GPIO if one is added. Leaving an unverified pin

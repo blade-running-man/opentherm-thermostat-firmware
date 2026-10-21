@@ -9,7 +9,7 @@
 // alternative and it is what this file exists to avoid.
 //
 // This file knows about sockets and nothing about boilers. Entity keys are opaque
-// strings on purpose: CLAUDE.md forbids a second entity list, and giving the payload a
+// strings on purpose: AGENTS.md forbids a second entity list, and giving the payload a
 // hand-written shape here would be exactly that. `api/device.ts` holds the values, and
 // `api/entities.ts` -- generated from tools/opentherm_ids.py -- will type them.
 

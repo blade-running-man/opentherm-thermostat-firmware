@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // The two documents the device HANDS OUT while it is being set up: the list of networks it
-// heard (GET /api/wifi/scan) and the state document (GET /api/provision, a.k.a. /api/status).
+// heard (GET /api/wifi/scan) and the state document (GET /api/status, also the POST /api/provision reply).
 //
 // Both are rendered into a fixed-size buffer, and both contain strings that were not chosen by
 // the owner: the SSID of a neighbour's router is an outsider's text inside JSON. Two
@@ -97,7 +97,7 @@ void test_an_ssid_with_json_in_it_cannot_break_the_document(void) {
   TEST_ASSERT_NULL(strstr(first + 1, "\"rssi\""));
 }
 
-// --- GET /api/provision ----------------------------------------------------------------------
+// --- the status document (GET /api/status) ---------------------------------------------------
 
 namespace {
 ot_wire_provision_t connected_status(void) {

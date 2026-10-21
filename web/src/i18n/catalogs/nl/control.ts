@@ -86,6 +86,7 @@ export const control = {
   "control.hero.tag.rad": "RAD",
   "control.hero.tag.sink": "WASBAK",
   "control.hero.tag.cold": "KOUD",
+  "control.hero.tag.gas": "GAS",
   "control.hero.tag.boiler": "KETEL",
   "control.hero.tag.standby": "Standby",
 

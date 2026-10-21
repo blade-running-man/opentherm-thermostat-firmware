@@ -10,7 +10,7 @@
 // generator and is not a second entity list: it holds no names, no units and no codecs —
 // only the ID numbers the boiler named itself.
 //
-// Nor is it privileged (CLAUDE.md, "The web interface has no privileged endpoint"): the
+// Nor is it privileged (AGENTS.md, "The web interface has no privileged endpoint"): the
 // Boiler page is an ordinary client, and curl gets exactly the same document.
 //
 // A separate module rather than lines in client.ts: that one is already up against the

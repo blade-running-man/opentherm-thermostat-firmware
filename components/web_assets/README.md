@@ -107,6 +107,6 @@ to produce the embedded `.gz` files.
 
 - Building the SPA inside the firmware build removes any manual "don't forget to
   rebuild the front end" step — the front end cannot drift from the binary.
-- Embedding the three files (~15 KB gzipped) as one artefact was chosen over a
-  separate filesystem partition specifically so an OTA cannot leave a new binary
-  serving a stale UI.
+- Embedding the three files (about 80 KB gzipped, nearly all of it `app.js`) as
+  one artefact was chosen over a separate filesystem partition specifically so a
+  firmware update cannot leave a new binary serving a stale UI.

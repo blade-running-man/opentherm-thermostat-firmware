@@ -47,7 +47,7 @@ static void wifi_config_from(const ot_wifi_t *wifi, wifi_config_t *out)
 // Every call in here is logged and returned on, never ESP_ERROR_CHECK'd. A radio that will not
 // come up must leave a device that still drives the boiler and still says why over USB;
 // aborting turns that into a reboot loop, which is the one failure nobody can reach the device to
-// fix (CLAUDE.md).
+// fix (AGENTS.md).
 
 static void apply_ap_config(void)
 {

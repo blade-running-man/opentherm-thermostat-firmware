@@ -8,72 +8,27 @@
    the theme tokens for its own surface/text — only the page around it does. */
 
 .hero {
+  position: relative;
   clip-path: var(--razor);
   background: radial-gradient(120% 90% at 50% 0%, #14142a 0%, #08080f 62%);
   box-shadow: inset 0 0 0 1px #3a3a52;
   overflow: hidden;
 }
 
-/* Synthwave backdrop, behind the scene; the content sits above it (z-index 1). */
-.status, .furnace, .stats { position: relative; z-index: 1; }
-
-.backdrop {
+/* A faint HUD grid behind the scene — the same one the ComfoAir's pixel scenes sit on, so the two
+   firmwares' panels read as one instrument family. The canvas is transparent, so it shows through;
+   the content sits above it. */
+.hero::before {
+  content: "";
   position: absolute;
   inset: 0;
-  z-index: 0;
-  overflow: hidden;
   pointer-events: none;
-}
-.stars {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 48%;
-  opacity: 0.7;
   background-image:
-    radial-gradient(1px 1px at 12% 30%, #ffffff, transparent),
-    radial-gradient(1px 1px at 28% 62%, #bfe9ff, transparent),
-    radial-gradient(1px 1px at 44% 20%, #ffffff, transparent),
-    radial-gradient(1px 1px at 58% 48%, #cfe6ff, transparent),
-    radial-gradient(1px 1px at 70% 28%, #ffffff, transparent),
-    radial-gradient(1px 1px at 82% 58%, #bfe9ff, transparent),
-    radial-gradient(1px 1px at 90% 36%, #ffffff, transparent),
-    radial-gradient(1px 1px at 20% 46%, #ffffff, transparent),
-    radial-gradient(1px 1px at 66% 12%, #cfe6ff, transparent);
+    linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+  background-size: 16px 16px;
 }
-.horizon {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 52%;
-  height: 2px;
-  background: #9ff8ff;
-  box-shadow: 0 0 10px 2px rgba(0, 240, 255, 0.6);
-}
-.grid {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: 320%;
-  height: 52%;
-  transform: translateX(-50%) perspective(140px) rotateX(66deg);
-  transform-origin: bottom center;
-  background-image:
-    linear-gradient(to right, rgba(45, 245, 255, 0.9) 2px, transparent 2px),
-    linear-gradient(to bottom, rgba(45, 245, 255, 0.9) 2px, transparent 2px);
-  background-size: 26px 26px;
-  filter: drop-shadow(0 0 4px rgba(0, 240, 255, 0.8));
-  -webkit-mask-image: linear-gradient(to top, #000 78%, transparent);
-  mask-image: linear-gradient(to top, #000 78%, transparent);
-}
-@media (prefers-reduced-motion: no-preference) {
-  .grid { animation: grid-move 2s linear infinite; }
-}
-@keyframes grid-move {
-  from { background-position: 0 0; }
-  to { background-position: 0 22px; }
-}
+.status, .furnace, .stats { position: relative; }
 
 .status {
   display: flex;
@@ -109,9 +64,9 @@
 .furnace {
   position: relative;
   width: 100%;
-  max-width: 480px;
+  max-width: 720px;
   margin: 14px auto 4px;
-  aspect-ratio: 150 / 112;
+  aspect-ratio: 192 / 146;
 }
 .scene {
   position: absolute;
@@ -120,7 +75,7 @@
   height: 100%;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  filter: drop-shadow(0 0 5px rgba(255, 42, 109, 0.22));
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.12));
 }
 
 .tag {
@@ -131,15 +86,16 @@
   text-transform: uppercase;
   pointer-events: none;
 }
-.flowTag { left: 30%; top: 76%; color: #ff9d55; }
-.retTag { left: 52%; top: 91%; color: #35e6e0; }
-.radTag { right: 6%; top: 30%; color: #35e6e0; }
-.sinkTag { left: 53%; top: 26%; color: #6fe0ff; }
-.coldTag { left: 1%; top: 83%; color: #35e6e0; }
+.flowTag { left: 35%; top: 77.5%; color: #ff9d55; }
+.retTag { left: 74%; top: 83%; color: #35e6e0; }
+.radTag { left: 82%; top: 27%; color: #35e6e0; }
+.sinkTag { left: 49%; top: 24%; color: #6fe0ff; }
+.coldTag { left: 1%; top: 94.5%; color: #35e6e0; }
+.gasTag { left: 1%; top: 85.5%; color: #f6dc4c; }
 .plate {
   position: absolute;
-  left: 11%;
-  top: 16%;
+  left: 18%;
+  top: 6%;
   font-size: 0.5rem;
   letter-spacing: 0.14em;
   color: #ff6f9f;
@@ -148,9 +104,9 @@
 }
 .standby {
   position: absolute;
-  left: 2%;
-  right: 65%;
-  top: 44%;
+  left: 14%;
+  right: 69%;
+  top: 47%;
   transform: translateY(-50%);
   text-align: center;
   color: #c8bde0;
@@ -167,8 +123,8 @@
   padding: 6px 14px 12px;
 }
 .stat {
-  /* semi-transparent so the synthwave grid floor shows through — HUD tiles over the grid */
-  background: rgba(10, 12, 26, 0.42);
+  /* semi-transparent so the HUD grid shows through — tiles over the grid */
+  background: rgba(10, 12, 26, 0.6);
   border: 1px solid #3a3a52;
   border-radius: 6px;
   padding: 8px 10px;

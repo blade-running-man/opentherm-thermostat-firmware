@@ -222,14 +222,20 @@ typedef enum {
     OT_CONFIG_NS_COUNT,
 } ot_config_ns_t;
 
-// The reset tiers, and the two durations are the gesture's, not this component's: 5 s after boot is soft,
-// 15 s is hard. The button is GPIO9, which is also the download strap -- holding it AT POWER-ON
-// enters the bootloader instead, so neither tier can be triggered that way.
+// The reset tiers. This component decides only WHAT each tier erases (ot_config_reset_erases(),
+// carried out by ot_config_nvs_reset()); WHO asks for a reset, and by what gesture, is the
+// caller's business and is not encoded here. No caller is wired on this build.
 typedef enum {
-    // Wi-Fi and the UI password. The UI password goes deliberately: a forgotten password on a
-    // device that is visible on the network and completely unusable is otherwise unfixable
-    // without USB.
+    // The WI-FI and OWNER namespaces: the network pair (with the known-good pair and the
+    // first-run facts beside it) and the UI password. It means "forget this network and let me
+    // back in", not "throw away everything the owner configured", so the APP namespace -- broker,
+    // prefix, discovery, name -- survives it. The UI password goes deliberately: a forgotten
+    // password on a device that is visible on the network and completely unusable is otherwise
+    // unfixable without USB.
     OT_CONFIG_RESET_SOFT,
+    // Every namespace, answered for the whole enum rather than from a list, so a namespace added
+    // later is erased without anyone extending the reset. The failure this prevents is a device
+    // passed on with the previous owner's broker password still in its flash.
     OT_CONFIG_RESET_HARD,
 } ot_config_reset_t;
 
@@ -763,8 +769,8 @@ typedef enum {
     // are wrong: erasing destroys a working owner's configuration to fix a problem they do not
     // have, and refusing to boot is a brick on a device behind a front panel. So the document is
     // read with whatever this build understands and the store goes READ-ONLY -- the device keeps
-    // ventilating, keeps its network and keeps its broker, and refuses to write settings until
-    // someone does the 15-second reset, which is a way back.
+    // talking to the boiler, keeps its network and keeps its broker, and refuses to write
+    // settings until a build that understands the document is flashed back, which is a way back.
     OT_CONFIG_SCHEMA_FUTURE,
 } ot_config_schema_action_t;
 

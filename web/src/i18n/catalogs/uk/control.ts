@@ -87,6 +87,7 @@ export const control = {
   "control.hero.tag.rad": "РАД.",
   "control.hero.tag.sink": "МИЙКА",
   "control.hero.tag.cold": "ХОЛОД",
+  "control.hero.tag.gas": "ГАЗ",
   "control.hero.tag.boiler": "КОТЕЛ",
   "control.hero.tag.standby": "Очікування",
 

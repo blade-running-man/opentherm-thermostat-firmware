@@ -4,8 +4,8 @@ import { compression } from "vite-plugin-compression2";
 import path from "path";
 import { mockPlugin } from "./mock/plugin.ts";
 
-// Every route the SPA uses. It is deliberately short: PROMPT.md §6.4 forbids the
-// UI from having a path the same API does not expose to everyone else.
+// Every route the SPA uses. It is deliberately short: the web interface has no
+// privileged handle -- no path the same API does not expose to everyone else.
 const proxyRoutes = ["/api", "/ws"];  // every path the firmware serves, and no other
 
 // Post-build: replace type="module" with plain script tag for IIFE compatibility

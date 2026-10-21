@@ -96,10 +96,13 @@ and sets `pins_shorted` if it does.
 
 ## Tests
 
-No dedicated host suite lives inside this component. The `ot_master` host suite and its
-fake ESP-IDF live at `test/test_ot_master/idf/`. That fake must **NOT** be moved into a
-shared directory: once two suites share it, "it grew a capability for suite B" becomes a way
-to quietly weaken suite A.
+`ot_master` has no host suite: it is the timer-and-GPIO half, and there is no fake ESP-IDF in
+the tree. Its pure neighbours are host-tested — the frame (`test_ot_frame`), the transmit
+encoding (`test_ot_encode`) and the receive state machine (`test_ot_decode`) — and what it does
+on the wire is checked on hardware (`docs/hardware-verification/02-boiler-conversation.md`). A
+fake ESP-IDF, if one is ever added for it, lives in that suite's own directory and must **NOT**
+be moved into a shared one: once two suites share it, "it grew a capability for suite B" becomes
+a way to quietly weaken suite A.
 
 ## Notes
 

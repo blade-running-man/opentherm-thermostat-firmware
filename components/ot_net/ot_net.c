@@ -26,7 +26,7 @@
 //    survives a reboot, so a panic over one is a loop with no way out over the air, on a
 //    thermostat screwed to a wall with the boiler depending on it. Radio calls
 //    are the same shape of hazard for a different reason: nothing may reboot because a peer is absent
-//    (CLAUDE.md).
+//    (AGENTS.md).
 
 // THE CUT. This was one file of a thousand lines; it is four, cut where the
 // responsibilities already met, with every function body moved byte for byte. "This file" above

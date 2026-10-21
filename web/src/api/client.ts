@@ -13,7 +13,7 @@
 // and the configuration document -- /api/config -- in api/config.ts. None is a second API
 // client: each imports request()/requestVoid() from here, so ApiError and the "an unreadable
 // body is a fault" rule below are the same ones. They are separate only because this file is at
-// the project's 350-line ceiling (CLAUDE.md), and each is a seam that already existed; what is
+// the project's 350-line ceiling (AGENTS.md), and each is a seam that already existed; what is
 // left here is the device itself: its log, its operations and its network.
 
 export class ApiError extends Error {
@@ -242,7 +242,7 @@ export interface ScanResult {
  *     serving this page from its own access point the radio leaves that channel while it
  *     sweeps -- the phone may lose the page mid-request. The page therefore treats a failed
  *     scan as "no list this time" and keeps manual entry available; the firmware must not let
- *     a failed or slow scan restart, reboot or drop anything (CLAUDE.md: nothing reboots
+ *     a failed or slow scan restart, reboot or drop anything (AGENTS.md: nothing reboots
  *     because a peer is absent, and here the absent peer is the browser).
  */
 export function scanNetworks(): Promise<ScanResult[]> {

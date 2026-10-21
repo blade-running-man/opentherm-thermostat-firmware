@@ -126,7 +126,9 @@ void ot_control_io_heard(ot_control_io_heard_t *h, uint8_t data_id, ot_msg_type_
                          uint16_t raw)
 {
     ot_control_io_readback(&h->rb, data_id, type, raw);
-    // The FIRST refusal is kept: the task's one line names the value the boiler first refused.
+    // The FIRST refusal is kept, with the DATA-VALUE the reply carried: the task's one line prints
+    // it. The specification does not fix that value (a boiler may echo the refused setpoint, send
+    // 0x0000 or anything else), so it is a diagnostic for the log and nothing decides on it.
     // DO NOT take UNKNOWN-DATAID here too: that is ot_state's mark, warned about apart, and it says
     // the boiler does not know ID 1 at all -- not that the value is outside its range.
     if (data_id == OT_CONTROL_IO_ID_TSET && type == OT_MSG_DATA_INVALID && !h->id1_invalid) {

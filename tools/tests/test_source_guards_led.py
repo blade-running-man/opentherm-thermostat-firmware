@@ -18,7 +18,7 @@ undoing the rule it carried -- the lesson of test_source_guards.py, whose helper
 * a bus write or the bus lock creeping into reader-only glue -- the OpenTherm master must never
   fall silent, and a cosmetic LED task is the last place that invariant should be re-litigated;
 * the start guarded by something other than the board's rgb.gpio, so a board with no LED still
-  spins up RMT on a GPIO that was never meant to carry one (CLAUDE.md, "not a single GPIO number
+  spins up RMT on a GPIO that was never meant to carry one (AGENTS.md, "not a single GPIO number
   outside components/board/").
 """
 from pathlib import Path

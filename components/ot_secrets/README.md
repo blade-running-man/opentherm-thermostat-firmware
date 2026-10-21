@@ -95,7 +95,7 @@ framework).
 
 - The rules are the server half of a write-only scheme; the client half is
   `web/src/pages/settings/sections/SecretField.tsx`.
-- Enforces the project-wide rule "Secrets are write-only" (see `CLAUDE.md`): a stored password is
+- Enforces the project-wide rule "Secrets are write-only" (see `AGENTS.md`): a stored password is
   returned by no API projection; a read hands back a sentinel.
 - The substring-match design intentionally redacts future keys (e.g. a new "MQTT Password" or
   "API Token") without anyone extending a whitelist.
