@@ -1,0 +1,57 @@
+# Builds the VitePress site in docs/ and publishes it to GitHub Pages
+# (https://blade-running-man.github.io/opentherm-thermostat-firmware/).
+#
+# The build is the same gate as `cd docs && npm run docs:build`: a dead link between pages fails it,
+# and nothing is published. web/src/api/entities.ts is a trigger because reference/entities is
+# rendered from it at build time.
+name: docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - 'web/src/api/entities.ts'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; a newer push supersedes a queued one but never cancels one mid-deploy.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: docs/package-lock.json
+      - uses: actions/configure-pages@v5
+      - run: npm ci
+        working-directory: docs
+      - run: npm run docs:build
+        working-directory: docs
+        env:
+          DOCS_BASE: /${{ github.event.repository.name }}/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/.vitepress/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

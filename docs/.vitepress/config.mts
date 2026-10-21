@@ -1,14 +1,36 @@
-import { defineConfig, type DefaultTheme } from 'vitepress'
+import { posix } from 'node:path'
+import { defineConfig, type DefaultTheme, type MarkdownRenderer as MarkdownIt } from 'vitepress'
 
 // The site root is docs/. Files under docs/public/ (the vendor PDFs in public/manuals/) are copied
 // to the site root verbatim and linked by their served path, e.g. /manuals/esp32-c3-mini/<file>.pdf.
 
-// A relative link whose target resolves outside docs/. Every site page sits at most one directory
-// deep (docs/<section>/<page>.md), so two leading `../` always leave docs/; a root page
-// (index.md) cannot be told apart from a section page here because VitePress hands the predicate
-// the link alone, not its source file -- root pages must therefore not link `../` into the repo.
-// VitePress normalises relative links to a leading `./` before the check, hence the optional prefix.
-const LEAVES_DOCS = /^(\.\/)?(\.\.\/){2,}/
+// Where a link into the rest of the repository (a component README, a source file) points on the
+// published site. The pages link such files relatively, which works when browsing docs/ on GitHub
+// or in an editor; the built site has no such files, so those links are rewritten to the file on
+// GitHub (see repoLinks below).
+const REPO_BLOB = 'https://github.com/blade-running-man/opentherm-thermostat-firmware/blob/main/'
+
+// Rewrites every relative link whose target resolves outside docs/ to REPO_BLOB, resolving it
+// against the page's own path -- so a root page and a section page are handled alike. It runs as a
+// core rule, before VitePress's link renderer does its dead-link check: the rewritten links are
+// external by then, and every relative link left is one the check must find inside the site.
+// DO NOT turn this into an `ignoreDeadLinks` pattern: that would let a dead in-site link through
+// and still publish every repo link as a 404.
+function repoLinks(md: MarkdownIt) {
+  md.core.ruler.push('repo_links', (state) => {
+    const page: string | undefined = state.env?.relativePath
+    if (!page) return
+    for (const block of state.tokens) {
+      for (const tok of block.children ?? []) {
+        if (tok.type !== 'link_open') continue
+        const href = tok.attrGet('href')
+        if (!href || /^[a-z][a-z0-9+.-]*:|^[#/]/i.test(href)) continue
+        const target = posix.normalize(posix.join(posix.dirname(page), href))
+        if (target.startsWith('../')) tok.attrSet('href', REPO_BLOB + target.slice(3))
+      }
+    }
+  })
+}
 
 const sidebar: DefaultTheme.SidebarMulti = {
   '/guide/': [
@@ -144,7 +166,8 @@ export default defineConfig({
     'executor and guard with Home Assistant as the controller -- MQTT with discovery, REST and ' +
     'a web UI over one entity list.',
 
-  // The site may be published under a sub-path (e.g. GitHub Pages /<repo>/).
+  // The site may be published under a sub-path: GitHub Pages serves it at /<repo>/, and
+  // .github/workflows/docs.yml sets DOCS_BASE to that.
   base: process.env.DOCS_BASE ?? '/',
   // Separate dirs per build so parallel builds (several agents at once) never share state.
   ...(process.env.DOCS_CACHE_DIR ? { cacheDir: process.env.DOCS_CACHE_DIR } : {}),
@@ -165,9 +188,9 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: false,
 
-  // DO NOT set this to `true`: a dead link between site pages is a real bug. Only links that
-  // genuinely point outside the built site are let through.
-  ignoreDeadLinks: [LEAVES_DOCS],
+  // No `ignoreDeadLinks`: a dead link between site pages is a real bug, and links into the rest of
+  // the repository are made external by repoLinks before the check runs.
+  markdown: { config: repoLinks },
 
   themeConfig: {
     // Five top-level entries, not one per section: nine do not fit a laptop-width bar. The

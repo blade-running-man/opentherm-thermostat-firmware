@@ -154,7 +154,8 @@ discovery names stay English.
 ## Documentation
 
 [`docs/`](docs/) is a [VitePress](https://vitepress.dev/) site — the as-built design and reference,
-and the authority for what the firmware does:
+and the authority for what the firmware does. It is published at
+**<https://blade-running-man.github.io/opentherm-thermostat-firmware/>**.
 
 | Section | What is in it |
 | --- | --- |
